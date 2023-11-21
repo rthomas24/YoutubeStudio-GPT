@@ -15,12 +15,19 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { YoutubeReducer, youtubeFeatureKey } from './events/youtube.reducer';
 import { YoutubeEffects } from './events/youtube.effects';
+import { TopNavComponent } from './components/top-nav/top-nav.component';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DescriptionGeneratorComponent } from './components/description-generator/description-generator.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [
     AppComponent,
     ApiKeyComponent,
-    HomeComponent
+    HomeComponent,
+    TopNavComponent,
+    DescriptionGeneratorComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +38,9 @@ import { YoutubeEffects } from './events/youtube.effects';
     InputTextModule,
     SelectButtonModule,
     ButtonModule,
+    ToolbarModule,
+    TabMenuModule,
+    BadgeModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),

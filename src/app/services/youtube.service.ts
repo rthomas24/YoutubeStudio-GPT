@@ -41,13 +41,17 @@ export class YoutubeService {
   public formatTranscript(transcript: string){
     const sentences = transcript.split('. ');
 
-    // Capitalize the first letter of each sentence
-    const capitalizedSentences = sentences.map(sentence => {
-        return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+    // Capitalize the first letter of each sentence and add a newline
+    const formattedSentences = sentences.map(sentence => {
+        if (sentence) {
+            return sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.\n';
+        }
+        return sentence;
     });
 
-    // Join the sentences back together, adding '. ' between them
-    return capitalizedSentences.join('. ');
+    // Join the sentences back together, now each sentence ends with a newline
+    // The slice(0, -1) removes the last added newline character after the final sentence
+    return formattedSentences.join('').slice(0, -1);
   }
 }
 

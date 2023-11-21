@@ -1,14 +1,39 @@
 .homeContainer{
 
-    .titleContainer{
+    .headerContainer{
         display: flex;
         align-items: center;
         flex-direction: column;
         color: black;
+        padding: 1rem 14%;
+        margin-top: 3rem;
     
-        .title{
-            stroke: black;
-            stroke-width: 5px;
+        .titleBackground{
+            background-color: white;
+            border-radius: 24px;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            justify-content: center;
+            white-space: nowrap;
+            overflow: hidden;
+
+            .title{
+                stroke: black;
+                stroke-width: 5px;
+                font-size: 24px;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+            }
+        }
+
+        .description{
+            color: white;
+            font-weight: 500;
         }
     }
 
@@ -21,12 +46,18 @@
 
         .youtubeInput{
             border-radius: 1rem;
+            border: none;
+            background-color: #393B3B;
+            color: white;
         }
         
         .transcriptBtn{
             border-radius: 0rem 1rem 1rem 0;
             right: 2rem;
+            z-index: 1;
+            background-color: #9A8AFB;
+            border: none;
         }
-        
+
     }
 }

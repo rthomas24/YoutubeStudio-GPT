@@ -5,4 +5,43 @@
 
 .p-inputgroup{
     width: 50% !important;
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: white;
+      }
+        ::-moz-placeholder { /* Firefox 19+ */
+        color: white;
+      }
+       :-ms-input-placeholder { /* IE 10+ */
+        color: white;
+      }
+       :-moz-placeholder { /* Firefox 18- */
+        color: white;
+      }
 }
+
+body {
+    background: #525252;//linear-gradient(180deg, #000 0%, #9A8AFB 100%);
+    /* This ensures the background covers the entire body, even if there's scrolling */
+    min-height: 100vh;
+    margin: 0;
+    padding: 0rem 4rem;
+    /* This is to ensure the background covers the entire body */
+    background-attachment: fixed;
+}
+
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+    background: #2A2A2A;
+    color: white;
+    border-color: #9A8AFB;
+}
+
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    background: #898989;
+    color: #2e2e2e;
+}
+
+.p-tabmenu .p-tabmenu-nav {
+    background: transparent;
+    border: 2px solid transparent;
+}
+

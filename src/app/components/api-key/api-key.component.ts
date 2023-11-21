@@ -14,6 +14,15 @@ export class ApiKeyComponent implements OnInit {
   public hasKeyUploaded: boolean = false
   public apiKeyValue: string = ''
   public youtubeInfo$: Observable<YoutubeInfo>
+
+  public leftSide = [
+    { label: 'Import API Key', icon: 'pi pi-fw pi-lock' },
+    { label: 'Video Transcript', icon: 'pi pi-fw pi-file' }
+  ]
+  public rightSide = [
+    { label: 'Description AI', icon: 'pi pi-fw pi-youtube' },
+    { label: 'Chat Bot', icon: 'pi pi-fw pi-comment' }
+  ]
   constructor(private youtubeService: YoutubeService, private store: Store){
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
   }

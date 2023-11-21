@@ -1,40 +1,37 @@
 <div class="homeContainer">
-    <div class="header"></div>
+    <app-top-nav></app-top-nav>
 
-    <div class="titleContainer">
-        <h1 class="title">AI Document Helper</h1>
-    </div>
-    
-    <div class="card flex flex-column md:flex-row gap-3">
-       
-        
-      
-    <div class="youtubeLink">
-        <label htmlFor="username">Youtube URL</label>
-        
-        <div class="p-inputgroup">
-            <input 
-                class="youtubeInput" 
-                pInputText 
-                placeholder="https://www.youtube.com/..." 
-                id="username" 
-                aria-describedby="username-help" 
-                [(ngModel)]="youtubeUrl" 
-            />
-            <button 
-                class="transcriptBtn" 
-                (click)="getTranscript()" 
-                type="button" pButton 
-                icon="pi pi-send" 
-                styleClass="p-button-warn"
-            ></button>
+    <div class="headerContainer">
+        <div class="titleBackground">
+            <h1 class="title">All-In-One Innovative Companion for YouTube Creativity</h1>
         </div>
-        <small id="username-help">Enter the URL for the Youtube Video.</small>
+
+        <div class="description">
+            <p>An interface crafted to amplify your YouTube experience. Your interactive partner for generating dynamic video descriptions and engaging in immersive Q&A sessions with your content. Every element of your video, transformed into captivating narratives and interactive dialogues, all in one intuitive platform.</p>
+        </div>
     </div>
     
-       
-       
-    </div>
+        <div class="youtubeLink">
+            
+            <div class="p-inputgroup">
+                <input 
+                    class="youtubeInput" 
+                    pInputText 
+                    placeholder="https://www.youtube.com/..." 
+                    id="username" 
+                    aria-describedby="username-help" 
+                    [(ngModel)]="youtubeUrl" 
+                />
+                <button 
+                    class="transcriptBtn" 
+                    (click)="getTranscript()" 
+                    type="button" pButton 
+                    icon="pi pi-send" 
+                    styleClass="p-button-warn"
+                ></button>
+            </div>
+        </div>
+    
 
     <div>
         <app-api-key></app-api-key>

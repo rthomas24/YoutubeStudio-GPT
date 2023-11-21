@@ -13,6 +13,8 @@ export class HomeComponent {
   constructor(private store: Store){}
 
   getTranscript(){
-    this.store.dispatch(getYoutubeInfo({youtubeUrl: this.youtubeUrl}))
+    if(this.youtubeUrl.includes('youtube')) {
+      this.store.dispatch(getYoutubeInfo({youtubeUrl: this.youtubeUrl}))
+    }
   }
 }
