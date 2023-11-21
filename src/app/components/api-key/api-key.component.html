@@ -1,0 +1,37 @@
+<div class="aiContainer">
+
+    <div *ngIf="!hasKeyUploaded; else hasValidKey" class="noKeyContainer">
+        <p class="helperClass">AI Helper</p>
+        <p class="importKey">Import an OpenAI API Key to use the Ai Helper</p>
+
+        <div class="keyContainer">
+            <p class="apiKey">OpenAI Api Key: </p>
+            <input 
+                placeholder="Enter OpenAi API Key" 
+                class="APIinputbar" 
+                type="text" 
+                [(ngModel)]="apiKeyValue" 
+            />
+            <p-button (click)="storeApiKey()" [raised]="true" icon="pi pi-lock"></p-button>
+        </div>
+
+        <div class="disclaimerContainer">
+
+        </div>
+    </div>
+
+    <ng-template #hasValidKey>
+        <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="hasKeyContainer">
+            <p-header>
+                <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+            </p-header>
+            <p class="transcript">{{ youtubeInfo.transcript }}</p>
+        </div>
+    </ng-template>
+
+    <div class="descriptionContainer">
+        <p>how many words</p>
+        <p>key words you want added in</p>
+
+    </div>
+</div>

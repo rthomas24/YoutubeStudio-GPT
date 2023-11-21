@@ -1,0 +1,43 @@
+<div class="homeContainer">
+    <div class="header"></div>
+
+    <div class="titleContainer">
+        <h1 class="title">AI Document Helper</h1>
+    </div>
+    
+    <div class="card flex flex-column md:flex-row gap-3">
+       
+        
+      
+    <div class="youtubeLink">
+        <label htmlFor="username">Youtube URL</label>
+        
+        <div class="p-inputgroup">
+            <input 
+                class="youtubeInput" 
+                pInputText 
+                placeholder="https://www.youtube.com/..." 
+                id="username" 
+                aria-describedby="username-help" 
+                [(ngModel)]="youtubeUrl" 
+            />
+            <button 
+                class="transcriptBtn" 
+                (click)="getTranscript()" 
+                type="button" pButton 
+                icon="pi pi-send" 
+                styleClass="p-button-warn"
+            ></button>
+        </div>
+        <small id="username-help">Enter the URL for the Youtube Video.</small>
+    </div>
+    
+       
+       
+    </div>
+
+    <div>
+        <app-api-key></app-api-key>
+    </div>
+
+</div>
