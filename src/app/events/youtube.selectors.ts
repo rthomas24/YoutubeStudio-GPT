@@ -7,3 +7,7 @@ export const selectYoutubeInfo = createSelector(
     YoutubeDataState,
     (state: YoutubeState) => state.youtubeInfo
 );
+export const selectYoutubeTimestamps = createSelector(
+    YoutubeDataState,
+    (state: YoutubeState) => state.timestamps
+);

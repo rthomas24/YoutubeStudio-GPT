@@ -5,7 +5,7 @@
         align-items: center;
         flex-direction: column;
         color: black;
-        padding: 1rem 14%;
+        padding: 1rem 23%;
         margin-top: 3rem;
     
         .titleBackground{
@@ -59,5 +59,26 @@
             border: none;
         }
 
+    }
+
+    .contentContainer{
+        padding: 0% 10% 5% 10%;
+    }
+
+    .videoContainer{
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+
+        .video{
+            border-radius: 1rem;
+        }
+
+        .statsContainer{
+            display: flex;
+            align-items: center;
+            width: 20rem;
+        }
     }
 }

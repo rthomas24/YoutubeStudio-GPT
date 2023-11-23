@@ -2,7 +2,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 1rem;
+    width: 100%;
+    align-items: center;
+    height: 4rem;
+    background: #9C8BFF;
+    box-shadow:  4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 0rem 0rem 0.5rem 0.5rem;
 
     .leftSide{
         display: flex;
@@ -13,11 +18,10 @@
         .logo{
             width: 3rem;
             height: 3rem;
-            
         }
 
         .titleContainer{
-            background-color: #9A8AFB;
+            background-color: white;
             border-radius: 24px;
             height: 2rem;
             padding: 0.25rem;

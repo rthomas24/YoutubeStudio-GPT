@@ -9,10 +9,9 @@ import { MenuItem } from 'primeng/api';
 export class DescriptionGeneratorComponent implements OnInit {
   @Input() items: MenuItem[] | undefined;
 
-  activeItem: MenuItem | undefined;
+  @Input() activeItem: MenuItem | undefined;
 
   ngOnInit() {
-    if(this.items)
-      this.activeItem = this.items[0];
+    
   }
 }

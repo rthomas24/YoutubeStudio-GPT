@@ -38,6 +38,23 @@ export class YoutubeService {
         }))
   }
 
+  public getYoutubeTimestampTranscript(youtubeUrl: string): Observable<YoutubeTimestamps[]>{
+    const headers = { 'x-api-key': environment.functionApiKey }
+    const url = environment.apiCalls.getYoutubeTimestamps
+    return this.http.post(url, {youtubeUrl}, { headers, responseType: 'text' })
+      .pipe(
+        map((data: any) => {
+          const parsedData = JSON.parse(data)
+          return parsedData.result.map((a: any) => {
+            return {
+              text: a.text,
+              start: a.offset / 1000,
+              duration: a.duration / 1000
+            } as YoutubeTimestamps
+          })
+        }))
+  }
+
   public formatTranscript(transcript: string){
     const sentences = transcript.split('. ');
 
@@ -62,4 +79,10 @@ export interface YoutubeInfo {
   title: string
   viewCount: number
   author: string
+}
+
+export interface YoutubeTimestamps {
+  text: string
+  start: number
+  duration: number
 }

@@ -18,6 +18,7 @@ import { PromptTemplate } from "langchain/prompts";
 import { Document } from "langchain/document";
 import { TokenTextSplitter } from "langchain/text_splitter";
 import { loadSummarizationChain } from "langchain/chains";
+import { YoutubeTranscript } from 'youtube-transcript';
 
 
 const corsHandler = cors({ origin: true });
@@ -60,6 +61,29 @@ export const getYoutubeTranscript = onRequest(async (request, response) => {
             logger.error('Error reading file:', error)
             response.status(500).send('Internal Server Error');
         }
+    });
+});
+
+export const getTimestampTranscript = onRequest(async (request, response) => {
+    corsHandler(request, response, async () => {
+
+        const apiKey = request.headers['x-api-key'];
+
+        if (apiKey !== configuredApiKey) {
+            response.status(403).send('Forbidden');
+            return;
+        }
+
+        const youtubeUrl: string = request.body.youtubeUrl ?? null;
+
+        YoutubeTranscript.fetchTranscript(youtubeUrl)
+            .then((result) => {
+                response.send({ result });
+
+            }).catch((error) => {
+                logger.error('Error reading file:', error)
+                response.status(500).send('Internal Server Error');
+            })        
     });
 });
 

@@ -1,8 +1,12 @@
 <div class="aiContainer">
 
-        <div class="tabsContainer">
-            <app-description-generator [items]="leftSide"></app-description-generator>
-        <div *ngIf="!hasKeyUploaded; else hasValidKey" class="noKeyContainer">
+    <div class="tabsContainer">
+        <app-description-generator 
+            [items]="leftSide" 
+            [activeItem]="leftSide[1]">
+        </app-description-generator>
+    
+        <div *ngIf="!hasKeyUploaded" class="noKeyContainer">
 
             <p class="helperClass">AI Helper</p>
             <p class="importKey">Import an OpenAI API Key to use the Ai Helper</p>
@@ -18,24 +22,35 @@
                 <button pButton class="apiLock" (click)="storeApiKey()" icon="pi pi-lock"></button>
             </div>
         </div>
-       
+
+        <ng-container *ngIf="hasKeyUploaded">
+            <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
+                <p-header class="noUrl" *ngIf="!youtubeInfo.title">
+                    <h2 class="p-text-center">Please enter a Youtube URL to get a Transcript</h2>
+                </p-header>
+
+                <p-header>
+                    <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+                </p-header>
+        
+                <div class="transcript">
+                    <p>{{ youtubeInfo.transcript }}</p>
+                </div>
+            </div>
+
+        </ng-container>
     </div>
 
-    <ng-template #hasValidKey>
-        <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
-            <p-header>
-                <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
-            </p-header>
-
-            <div class="transcript">
-                <p>{{ youtubeInfo.transcript }}</p>
-            </div>
-        </div>
-    </ng-template>
+    
 
     <div class="tabsContainer">
-        <app-description-generator [items]="rightSide"></app-description-generator>
+        <app-description-generator 
+            [items]="rightSide" 
+            [activeItem]="rightSide[0]">
+        </app-description-generator>
 
         <div class="descriptionContainer"></div>
     </div>
+
+    
 </div>

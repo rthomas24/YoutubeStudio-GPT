@@ -20,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { DescriptionGeneratorComponent } from './components/description-generator/description-generator.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { BadgeModule } from 'primeng/badge';
+import { StatsContainerComponent } from './components/stats-container/stats-container.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BadgeModule } from 'primeng/badge';
     ApiKeyComponent,
     HomeComponent,
     TopNavComponent,
-    DescriptionGeneratorComponent
+    DescriptionGeneratorComponent,
+    StatsContainerComponent
   ],
   imports: [
     BrowserModule,

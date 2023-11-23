@@ -23,6 +23,7 @@
             font-size: 30px;
             color: white;
             font-weight: 700;
+            margin: 1rem;
         }
 
         .importKey{
@@ -55,6 +56,11 @@
                 padding-left: 1rem;
             }
         }
+
+    }
+
+    .noUrl{
+        text-align: center;
     }
 
     .transcriptContainer{
