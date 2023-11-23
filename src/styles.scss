@@ -6,16 +6,16 @@
 .p-inputgroup{
     width: 50% !important;
     ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        color: white;
+        color: #AEAEAF;
       }
         ::-moz-placeholder { /* Firefox 19+ */
-        color: white;
+        color: #AEAEAF;
       }
        :-ms-input-placeholder { /* IE 10+ */
-        color: white;
+        color: #AEAEAF;
       }
        :-moz-placeholder { /* Firefox 18- */
-        color: white;
+        color: #AEAEAF;
       }
 }
 
@@ -24,20 +24,21 @@ body {
     /* This ensures the background covers the entire body, even if there's scrolling */
     min-height: 100vh;
     margin: 0;
-    padding: 0rem 4rem;
+    padding: 0rem 0rem;
     /* This is to ensure the background covers the entire body */
     background-attachment: fixed;
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    background: #2A2A2A;
-    color: white;
+    background: #DAD5FB;
+    // background: #2A2A2A;
+    color: rgb(0, 0, 0);
     border-color: #9A8AFB;
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-    background: #898989;
-    color: #2e2e2e;
+    background: #2A2A2A;
+    color: white;
 }
 
 .p-tabmenu .p-tabmenu-nav {
