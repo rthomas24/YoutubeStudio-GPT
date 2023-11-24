@@ -11,3 +11,8 @@ export const selectYoutubeTimestamps = createSelector(
     YoutubeDataState,
     (state: YoutubeState) => state.timestamps
 );
+
+export const selectActiveTabs = createSelector(
+    YoutubeDataState,
+    (state: YoutubeState) => state.activeTabs
+);

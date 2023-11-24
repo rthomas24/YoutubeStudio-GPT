@@ -46,3 +46,15 @@ body {
     border: 2px solid transparent;
 }
 
+
+.p-slider .p-slider-range{
+    background: #9A8AFB;
+}
+
+
+.p-chips, .p-chips .p-chips-multiple-container {
+    width: 100%;
+    max-height: 4rem;
+    overflow-y: scroll;
+    border-radius: 0.5rem;
+}

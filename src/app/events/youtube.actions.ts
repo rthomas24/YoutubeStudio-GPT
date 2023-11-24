@@ -27,3 +27,8 @@ export const getYoutubeTimestampsError = createAction(
   '[Youtube] Get Youtube Info Error',
   props<{ error: Error }>()
 );
+
+export const changeTabs = createAction(
+  '[Youtube] Get Youtube Info',
+  props<{ tab: string, tabType: string }>()
+);
