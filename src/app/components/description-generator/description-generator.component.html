@@ -1,16 +1,32 @@
-<div class="card space">
-    <p-tabMenu [model]="items" [activeItem]="activeItem">
-        <ng-template pTemplate="item" let-item>
-            <a class="p-menuitem-link flex justify-content-between align-items-center p-3">
-                <div>
-                    <span [class]="item.icon"></span>
-                    <span> {{ item.label }}</span>
+<div class="descriptionContainer">
+    <div class="toneContainer">
+        <p class="toneTitle">
+            TONE
+        </p>
+        <div class="toneOptions">
+            <ng-container *ngFor="let tones of toneOptions; let i = index">
+                <div class="btnContainer" >
+                    {{tones}}
                 </div>
-                <div>
-                    <span *ngIf="item.shortcut" [class]="item.shortcutClass">{{ item.shortcut }}</span>
-                    <p-badge *ngIf="item.badge" [value]="item.badge" [severity]="item.badgeSeverity"></p-badge>
-                </div>
-            </a>
-        </ng-template>
-    </p-tabMenu>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="wordCountContainer">
+        <p class="wordtitle">WORD COUNT: <span class="wordCountValue">{{wordCount}}</span></p>
+        <div>
+            <p-slider [(ngModel)]="wordCount" [max]="1000"></p-slider>
+        </div>
+    </div>
+
+    <div class="keyWordContainer">
+        <p class="keyTitle">KEY WORDS <span (click)="setVisible()" class="pi pi-info-circle"></span></p>
+        <p-dialog header="Header" [(visible)]="visible" [style]="{width: '50vw'}">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </p-dialog>
+        <p-chips [(ngModel)]="keywords"></p-chips>
+    </div>
 </div>

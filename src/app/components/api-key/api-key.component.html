@@ -1,10 +1,10 @@
 <div class="aiContainer">
-
     <div class="tabsContainer">
-        <app-description-generator 
+        <app-content-tabs
             [items]="leftSide" 
-            [activeItem]="leftSide[1]">
-        </app-description-generator>
+            [activeItem]="leftSide[1]"
+        >
+        </app-content-tabs>
     
         <div *ngIf="!hasKeyUploaded" class="noKeyContainer">
 
@@ -44,12 +44,14 @@
     
 
     <div class="tabsContainer">
-        <app-description-generator 
+        <app-content-tabs
             [items]="rightSide" 
-            [activeItem]="rightSide[0]">
-        </app-description-generator>
-
-        <div class="descriptionContainer"></div>
+            [activeItem]="rightSide[0]"
+        >
+        </app-content-tabs>
+        <div class="descriptionContainer">
+            <app-description-generator class="descriptionGenerator"></app-description-generator>
+        </div>
     </div>
 
     

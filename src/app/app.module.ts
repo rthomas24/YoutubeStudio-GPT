@@ -21,6 +21,11 @@ import { DescriptionGeneratorComponent } from './components/description-generato
 import { TabMenuModule } from 'primeng/tabmenu';
 import { BadgeModule } from 'primeng/badge';
 import { StatsContainerComponent } from './components/stats-container/stats-container.component';
+import { ContentTabsComponent } from './components/content-tabs/content-tabs.component';
+import { DividerModule } from 'primeng/divider';
+import { SliderModule } from 'primeng/slider';
+import { ChipsModule } from 'primeng/chips';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import { StatsContainerComponent } from './components/stats-container/stats-cont
     HomeComponent,
     TopNavComponent,
     DescriptionGeneratorComponent,
-    StatsContainerComponent
+    StatsContainerComponent,
+    ContentTabsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,8 +47,12 @@ import { StatsContainerComponent } from './components/stats-container/stats-cont
     SelectButtonModule,
     ButtonModule,
     ToolbarModule,
+    DialogModule,
     TabMenuModule,
+    DividerModule,
     BadgeModule,
+    SliderModule,
+    ChipsModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),

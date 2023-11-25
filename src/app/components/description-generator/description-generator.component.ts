@@ -1,17 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-description-generator',
   templateUrl: './description-generator.component.html',
   styleUrls: ['./description-generator.component.scss']
 })
-export class DescriptionGeneratorComponent implements OnInit {
-  @Input() items: MenuItem[] | undefined;
+export class DescriptionGeneratorComponent {
 
-  @Input() activeItem: MenuItem | undefined;
+  public tone: string = '';
+  public toneOptions: string[] = ['Happy', "Excited", "Formal", "Friendly", "Joyful", "Casual"];
+  public wordCount: number = 100;
+  public keywords: string[] = [];
+  public phrases: string = '';
+  visible: boolean = false;
 
-  ngOnInit() {
+  generateDescription(): void {
     
+  }
+
+  setVisible(){
+    this.visible = !this.visible
   }
 }
