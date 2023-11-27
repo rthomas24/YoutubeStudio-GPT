@@ -14,8 +14,7 @@ export class ApiKeyComponent implements OnInit {
   public hasKeyUploaded: boolean = false
   public apiKeyValue: string = ''
   public youtubeInfo$: Observable<YoutubeInfo>
-  // public transcriptTabActive = true
-  // public descriptionTabActive = true
+
 
   public leftSide = [
     { label: 'Import API Key', icon: 'pi pi-fw pi-lock' },

@@ -29,15 +29,13 @@ export class HomeComponent {
   }
 
   private extractVideoID(url: string): string {
-    // Logic to extract video ID from the YouTube URL
-    // You may need to adjust the logic based on the URL format
+  
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
 
     if (match && match[2].length == 11) {
       return match[2];
     } else {
-      // Handle invalid URL
       return '';
     }
   }
