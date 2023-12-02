@@ -32,3 +32,8 @@ export const changeTabs = createAction(
   '[Youtube] Get Youtube Info',
   props<{ tab: string, tabType: string }>()
 );
+
+export const uploadedKey = createAction(
+  '[Youtube] Uploaded API Key',
+  props<{ key: boolean }>()
+);

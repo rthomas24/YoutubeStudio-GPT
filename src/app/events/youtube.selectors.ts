@@ -16,3 +16,8 @@ export const selectActiveTabs = createSelector(
     YoutubeDataState,
     (state: YoutubeState) => state.activeTabs
 );
+
+export const selectUploadedKeyStatus = createSelector(
+    YoutubeDataState,
+    (state: YoutubeState) => state.hasUploadedKey
+);
