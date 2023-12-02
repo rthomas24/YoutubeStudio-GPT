@@ -26,6 +26,8 @@ import { DividerModule } from 'primeng/divider';
 import { SliderModule } from 'primeng/slider';
 import { ChipsModule } from 'primeng/chips';
 import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ContentComponent } from './components/content/content.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { DialogModule } from 'primeng/dialog';
     TopNavComponent,
     DescriptionGeneratorComponent,
     StatsContainerComponent,
-    ContentTabsComponent
+    ContentTabsComponent,
+    ContentComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +56,7 @@ import { DialogModule } from 'primeng/dialog';
     BadgeModule,
     SliderModule,
     ChipsModule,
+    InputTextareaModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),

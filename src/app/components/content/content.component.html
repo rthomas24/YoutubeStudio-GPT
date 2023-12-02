@@ -1,0 +1,43 @@
+<div class="aiContainer">
+    <div class="tabsContainer">
+        <app-content-tabs
+            [items]="leftSide" 
+            [activeItem]="leftSide[1]"
+        >
+        </app-content-tabs>
+
+        <app-api-key *ngIf="(hasKeyUploaded$ | async) === false" ></app-api-key>
+
+        <ng-container *ngIf="(hasKeyUploaded$ | async) === true">
+            <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
+                <p-header class="noUrl" *ngIf="!youtubeInfo.title">
+                    <h2 class="p-text-center">Please enter a Youtube URL to get a Transcript</h2>
+                </p-header>
+
+                <p-header>
+                    <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+                </p-header>
+        
+                <div class="transcript">
+                    <p>{{ youtubeInfo.transcript }}</p>
+                </div>
+            </div>
+
+        </ng-container>
+    </div>
+
+    
+
+    <div class="tabsContainer">
+        <app-content-tabs
+            [items]="rightSide" 
+            [activeItem]="rightSide[0]"
+        >
+        </app-content-tabs>
+        <div class="descriptionContainer">
+            <app-description-generator class="descriptionGenerator"></app-description-generator>
+        </div>
+    </div>
+
+    
+</div>
