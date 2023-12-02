@@ -58,3 +58,13 @@ body {
     overflow-y: scroll;
     border-radius: 0.5rem;
 }
+
+
+p-button,genBtn {
+    .p-button {
+        width: 100% !important;
+        background: #9A8AFB;
+        border: none;
+        display: block;
+    }
+}

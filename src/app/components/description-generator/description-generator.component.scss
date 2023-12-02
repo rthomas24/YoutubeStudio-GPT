@@ -27,6 +27,7 @@
                 margin-bottom: 1rem;
                 margin-left: 1rem;
                 transition: all 0.3s ease;
+                font-weight: 550;
 
 
                 &:hover {
@@ -80,6 +81,10 @@
             width: 100%;
         }
         
+    }
+
+    .genButtonContainer{
+        margin: 1rem 0;
     }
 }
 
