@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { YoutubeInfo, YoutubeTimestamps } from '../services/youtube.service';
-import { getYoutubeInfoSuccess, getYoutubeTimestampsSuccess, uploadedKey } from './youtube.actions';
+import { ChatCompletionResponse, YoutubeInfo, YoutubeTimestamps } from '../services/youtube.service';
+import { getAIYoutubeDescriptionSuccess, getYoutubeInfoSuccess, getYoutubeTimestampsSuccess, uploadedKey } from './youtube.actions';
 
 export const youtubeFeatureKey = 'youtube-info'
 
@@ -8,7 +8,8 @@ export interface YoutubeState {
     youtubeInfo: YoutubeInfo,
     timestamps: YoutubeTimestamps[],
     activeTabs: string[],
-    hasUploadedKey: boolean
+    hasUploadedKey: boolean,
+    generatedDescriptions: ChatCompletionResponse[]
 }
 
 const initialState: YoutubeState = {
@@ -21,7 +22,8 @@ const initialState: YoutubeState = {
     },
     timestamps: [],
     activeTabs: ['transcript', 'description'],
-    hasUploadedKey: false
+    hasUploadedKey: false,
+    generatedDescriptions: []
 };
 
 export const YoutubeReducer = createReducer(
@@ -46,6 +48,13 @@ export const YoutubeReducer = createReducer(
     return {
         ...state,
         hasUploadedKey: key
+    }
+  }),
+  on(getAIYoutubeDescriptionSuccess, (state: YoutubeState , { description }) =>
+  {
+    return {
+        ...state,
+        generatedDescriptions: [...state.generatedDescriptions, description]
     }
   })
 );

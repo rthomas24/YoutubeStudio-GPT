@@ -38,12 +38,4 @@ export class ContentComponent implements OnInit {
       this.store.dispatch(uploadedKey({key: true}))
     }
   }
-
-  public getDescription(transcript: string){
-    this.youtubeService.getYoutubeDescription(transcript).pipe(take(1)).subscribe((description: any) => {
-      const parsed = JSON.parse(description)
-      const parsedSummary = JSON.parse(parsed.summary)
-      console.log(parsedSummary)
-    })
-  }
 }

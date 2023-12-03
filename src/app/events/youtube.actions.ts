@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { YoutubeInfo, YoutubeTimestamps } from '../services/youtube.service';
+import { ChatCompletionResponse, YoutubeInfo, YoutubeTimestamps } from '../services/youtube.service';
+import { GenerateDescription } from '../components/description-generator/description-generator.component';
 
 
 export const getYoutubeInfo = createAction(
@@ -36,4 +37,17 @@ export const changeTabs = createAction(
 export const uploadedKey = createAction(
   '[Youtube] Uploaded API Key',
   props<{ key: boolean }>()
+);
+
+export const getAIYoutubeDescription = createAction(
+  '[Youtube] Get Youtube AI Description',
+  props<{ transcript: string, generateDescription: GenerateDescription }>()
+);
+export const getAIYoutubeDescriptionSuccess = createAction(
+  '[Youtube] Get Youtube AI Description Success',
+  props<{ description: ChatCompletionResponse }>()
+  );
+export const getAIYoutubeDescriptionError = createAction(
+  '[Youtube] Get Youtube AI Description Error',
+  props<{ error: Error }>()
 );
