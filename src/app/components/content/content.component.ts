@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
-import { selectUploadedKeyStatus, selectYoutubeInfo } from 'src/app/events/youtube.selectors';
-import { YoutubeInfo, YoutubeService } from 'src/app/services/youtube.service';
+import { Observable, filter } from 'rxjs';
+import { selectGeneratedDescriptions, selectUploadedKeyStatus, selectYoutubeInfo } from 'src/app/events/youtube.selectors';
+import { ChatCompletionResponse, YoutubeInfo, YoutubeService } from 'src/app/services/youtube.service';
 import { ApiKeyComponent } from '../api-key/api-key.component';
 import { uploadedKey } from 'src/app/events/youtube.actions';
 
@@ -15,6 +15,7 @@ export class ContentComponent implements OnInit {
   public apiKeyValue: string = ''
   public youtubeInfo$: Observable<YoutubeInfo>
   public hasKeyUploaded$: Observable<boolean>
+  public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
 
 
   public leftSide = [
@@ -28,7 +29,12 @@ export class ContentComponent implements OnInit {
   constructor(private youtubeService: YoutubeService, private store: Store){
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
     this.hasKeyUploaded$ = this.store.select(selectUploadedKeyStatus)
+    this.aiGenereatedDescriptions$ =  this.store.select(selectGeneratedDescriptions)
 
+
+    this.aiGenereatedDescriptions$.pipe(filter((aiDescription) => aiDescription.length > 0)).subscribe((a) => {
+      this.rightSide.push({ label: 'Generated Descriptions', icon: 'pi pi-fw pi-comment' })
+    })
   }
 
 

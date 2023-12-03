@@ -1,11 +1,11 @@
-<div class="descriptionContainer">
+<div *ngIf="(aiGenereatedDescriptions$ | async)?.length === 0; else showDescriptions" class="descriptionContainer">
     <div class="toneContainer">
         <p class="toneTitle">
             TONE
         </p>
         <div class="toneOptions">
             <ng-container *ngFor="let tones of toneOptions; let i = index">
-                <div class="btnContainer" >
+                <div (click)="addTone(tones, $event)" class="btnContainer" >
                     {{tones}}
                 </div>
             </ng-container>
@@ -15,7 +15,7 @@
     <div class="wordCountContainer">
         <p class="wordtitle">WORD COUNT: <span class="wordCountValue">{{wordCount}}</span></p>
         <div>
-            <p-slider [(ngModel)]="wordCount" [max]="1000"></p-slider>
+            <p-slider [(ngModel)]="wordCount" [step]="50" [max]="1000"></p-slider>
         </div>
     </div>
 
@@ -43,3 +43,13 @@
         
     </div>
 </div>
+
+<ng-template #showDescriptions>
+    <ng-container *ngIf="aiGenereatedDescriptions$ | async as descriptions">
+        <div *ngFor="let aiGen of descriptions">
+            <p>
+                {{ aiGen.summary.choices[0].message.content }}
+            </p>
+        </div>
+    </ng-container>
+</ng-template>
