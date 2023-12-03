@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment'
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { GenerateDescription } from '../components/description-generator/description-generator.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,36 @@ export class YoutubeService {
         }))
   }
 
-  public getYoutubeDescription(transcript: string): Observable<YoutubeInfo>{
+  public getYoutubeDescription(transcript: string, descriptionOptions: GenerateDescription): Observable<ChatCompletionResponse>{
     const headers = { 'x-api-key': environment.functionApiKey }
     const url = environment.apiCalls.getYoutubeDescription
-    return this.http.post(url, {transcript}, { headers, responseType: 'text' })
+    return this.http.post(url, {transcript, descriptionOptions}, { headers, responseType: 'text' })
       .pipe(
         map((data: any) => {
-          return data
+          const parsedData = JSON.parse(data)
+          return {
+            summary: {
+              id: parsedData.summary.id,
+              object: parsedData.summary.object,
+              created: parsedData.summary.created,
+              model: parsedData.summary.model,
+              choices: parsedData.summary.choices.map((choice: any) => {
+                return {
+                  index: choice.index,
+                  message: {
+                    role: choice.message.role,
+                    content: choice.message.content
+                  },
+                  finish_reason: choice.finish_reason
+                }
+              }),
+              usage: {
+                prompt_tokens: parsedData.summary.usage.prompt_tokens,
+                completion_tokens: parsedData.summary.usage.completion_tokens,
+                total_tokens: parsedData.summary.usage.total_tokens
+              }
+            }
+          } as ChatCompletionResponse
         }))
   }
 
@@ -85,4 +109,33 @@ export interface YoutubeTimestamps {
   text: string
   start: number
   duration: number
+}
+
+export interface ChatCompletionResponse {
+  summary: {
+    id: string;
+    object: string;
+    created: number;
+    choices: Choice[];
+    model: string;
+    system_fingerprint: string;
+    usage: Usage;
+  };
+}
+
+interface Choice {
+  index: number;
+  message: Message;
+  finish_reason: string;
+}
+
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface Usage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
 }

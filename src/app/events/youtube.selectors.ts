@@ -21,3 +21,8 @@ export const selectUploadedKeyStatus = createSelector(
     YoutubeDataState,
     (state: YoutubeState) => state.hasUploadedKey
 );
+
+export const selectGeneratedDescriptions = createSelector(
+    YoutubeDataState,
+    (state: YoutubeState) => state.generatedDescriptions
+);

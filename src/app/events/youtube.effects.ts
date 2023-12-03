@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { YoutubeService } from '../services/youtube.service';
-import { getYoutubeInfo, getYoutubeInfoError, getYoutubeInfoSuccess, getYoutubeTimestamps, getYoutubeTimestampsError, getYoutubeTimestampsSuccess } from './youtube.actions';
+import { ChatCompletionResponse, YoutubeService } from '../services/youtube.service';
+import { getAIYoutubeDescription, getAIYoutubeDescriptionError, getAIYoutubeDescriptionSuccess, getYoutubeInfo, getYoutubeInfoError, getYoutubeInfoSuccess, getYoutubeTimestamps, getYoutubeTimestampsError, getYoutubeTimestampsSuccess } from './youtube.actions';
 
 @Injectable()
 export class YoutubeEffects {
@@ -26,6 +26,15 @@ export class YoutubeEffects {
     switchMap(({youtubeUrl}) => this.youtubeService.getYoutubeTimestampTranscript(youtubeUrl).pipe(
       map(timestamps => getYoutubeTimestampsSuccess({timestamps})),
       catchError(error => of(getYoutubeTimestampsError({error})))
+    ))
+  ));
+
+
+  youtubeAiDescription$ = createEffect(() => this.actions$.pipe(
+    ofType(getAIYoutubeDescription),
+    switchMap(({transcript, generateDescription}) => this.youtubeService.getYoutubeDescription(transcript, generateDescription).pipe(
+      map((description: ChatCompletionResponse) => getAIYoutubeDescriptionSuccess({description})),
+      catchError(error => of(getAIYoutubeDescriptionError({error})))
     ))
   ));
 
