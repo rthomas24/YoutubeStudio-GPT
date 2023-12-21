@@ -1,13 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
 import { ChatCompletionResponse, YoutubeInfo, YoutubeTimestamps } from '../services/youtube.service';
-import { getAIYoutubeDescriptionSuccess, getYoutubeInfoSuccess, getYoutubeTimestampsSuccess, uploadedKey } from './youtube.actions';
+import { changeTabs, getAIYoutubeDescriptionSuccess, getYoutubeInfoSuccess, getYoutubeTimestampsSuccess, uploadedKey } from './youtube.actions';
 
 export const youtubeFeatureKey = 'youtube-info'
 
 export interface YoutubeState {
     youtubeInfo: YoutubeInfo,
     timestamps: YoutubeTimestamps[],
-    activeTabs: string[],
+    activeTabs: any,
     hasUploadedKey: boolean,
     generatedDescriptions: ChatCompletionResponse[]
 }
@@ -21,7 +21,14 @@ const initialState: YoutubeState = {
       author: ''
     },
     timestamps: [],
-    activeTabs: ['transcript', 'description'],
+    activeTabs: [
+      {
+        left: 'transcript'
+      },
+      {
+        right: 'description'
+      }
+    ],
     hasUploadedKey: false,
     generatedDescriptions: []
 };
@@ -56,5 +63,18 @@ export const YoutubeReducer = createReducer(
         ...state,
         generatedDescriptions: [...state.generatedDescriptions, description]
     }
+  }),
+  on(changeTabs, (state: YoutubeState, { tab, tabType }) => {
+    let updatedActiveTabs = state.activeTabs.map((tabItem: any) => {
+      if (tabItem.hasOwnProperty(tabType)) {
+        return { [tabType]: tab };
+      }
+      return tabItem;
+    });
+  
+    return {
+      ...state,
+      activeTabs: updatedActiveTabs
+    };
   })
 );

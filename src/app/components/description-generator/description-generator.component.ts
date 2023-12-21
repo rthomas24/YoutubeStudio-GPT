@@ -12,7 +12,7 @@ import { ChatCompletionResponse, YoutubeInfo } from 'src/app/services/youtube.se
 })
 export class DescriptionGeneratorComponent {
 
-  public tones: string[] = ['Happy', "Excited"];
+  public tones: string[] = [];
   public toneOptions: string[] = ['Happy', "Excited", "Formal", "Friendly", "Joyful", "Casual"];
   public wordCount: number = 100;
   public keywords: string[] = [];
@@ -47,6 +47,25 @@ export class DescriptionGeneratorComponent {
   setVisible(){
     this.visible = !this.visible
   }
+
+  addTone(tone: string, event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    if(clickedElement.classList.contains('selected')) {
+      clickedElement.classList.remove('selected')
+    } else {
+      clickedElement.classList.add('selected')
+    }
+
+    if(this.tones.includes(tone)) {
+        this.tones = this.tones.filter(t => t !== tone);
+    } else {
+        this.tones = [...this.tones, tone];
+    }
+
+    console.log(this.tones)
+  }
+  
 }
 
 

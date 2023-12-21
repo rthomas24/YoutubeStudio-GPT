@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { getYoutubeInfo, getYoutubeTimestamps } from 'src/app/events/youtube.actions';
+import { selectYoutubeInfo } from 'src/app/events/youtube.selectors';
+import { YoutubeInfo } from 'src/app/services/youtube.service';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +14,16 @@ import { getYoutubeInfo, getYoutubeTimestamps } from 'src/app/events/youtube.act
 export class HomeComponent {
   youtubeUrl: string = ''
   videoUrl?: SafeResourceUrl
+  public youtubeInfo$: Observable<YoutubeInfo>
 
-  constructor(private store: Store, private sanitizer: DomSanitizer){}
+  constructor(private store: Store, private sanitizer: DomSanitizer){
+    this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
+  }
 
 
   updateVideoUrl(url: string): void {
-    const videoId = this.extractVideoID(url);
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + videoId);
+    const videoId = this.extractVideoID(url)
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + videoId)
   }
 
   getTranscript(){

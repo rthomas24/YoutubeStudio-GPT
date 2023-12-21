@@ -30,7 +30,7 @@ export const getYoutubeTimestampsError = createAction(
 );
 
 export const changeTabs = createAction(
-  '[Youtube] Get Youtube Info',
+  '[Youtube] Change active tabs',
   props<{ tab: string, tabType: string }>()
 );
 

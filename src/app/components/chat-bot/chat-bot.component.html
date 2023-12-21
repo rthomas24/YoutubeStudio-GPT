@@ -1,0 +1,43 @@
+<div>
+    <div class="header">
+      <p style="color: white;" class="title">AI Assistant</p>
+    </div>
+  
+    <div class="aiChatContainer">
+  
+      <div class="messageContainer">
+        <ng-container>
+              <!-- <ng-container *ngFor="let message of mongoChatHistory">
+                  <div *ngIf="message.human" class="messageBubble humanMessage">
+                      <p class="messageText">{{ message.human }}</p>
+                  </div>
+                  <div *ngIf="message.ai" class="messageBubble aiMessage">
+                      <p class="messageText">{{ message.ai }}</p>
+                  </div>
+              </ng-container> -->
+              <!-- <div *ngIf="isLoadingAIMessage" class="messageBubble aiMessage">
+                  <ion-spinner class="spinner" name="crescent"></ion-spinner>
+              </div> -->
+      </ng-container>
+  
+      </div>
+  
+     
+      <div class="textAreaContainer">
+            
+          <div class="quickSelections">
+            
+                <!-- <ion-icon style="color: white;" (click)="changeTTS()" *ngIf="tts" name="volume-high"></ion-icon>
+                <ion-icon style="color: white;" (click)="changeTTS()" *ngIf="!tts" name="volume-mute"></ion-icon> -->
+          </div>
+  
+          <span style="width: 100%;">
+              <input placeholder="Ask Question..." class="textarea" id="float-input" rows="5" cols="30" [(ngModel)]="userMessage"/>
+          </span>
+         
+          <img style="width: 2rem;" src="assets/send.svg" />
+  
+      </div>
+  </div>
+</div>
+  

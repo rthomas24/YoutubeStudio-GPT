@@ -34,8 +34,9 @@
             [activeItem]="rightSide[0]"
         >
         </app-content-tabs>
-        <div class="descriptionContainer">
-            <app-description-generator class="descriptionGenerator"></app-description-generator>
+        <div *ngIf="getActiveTabs$ | async as tabs" class="descriptionContainer" [ngStyle]="{'padding': tabs[1].right === 'chat' ? '0' : '1rem'}">
+            <app-description-generator *ngIf="tabs[1].right !== 'chat'" class="descriptionGenerator"></app-description-generator>
+            <app-chat-bot class="bot" *ngIf="tabs[1].right === 'chat'" ></app-chat-bot>
         </div>
     </div>
 

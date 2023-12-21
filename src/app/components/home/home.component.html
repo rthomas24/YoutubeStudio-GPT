@@ -6,15 +6,21 @@
             <h1 class="title">All-In-One Innovative Companion for YouTube Creativity</h1>
         </div>
 
-        <!-- <div class="description">
-            <p>An interface crafted to amplify your YouTube experience. Your interactive partner for generating dynamic video descriptions and engaging in immersive Q&A sessions with your content. Every element of your video, transformed into captivating narratives and interactive dialogues, all in one intuitive platform.</p>
-        </div> -->
     </div>
 
     <div class="videoContainer">
         <iframe class="video" *ngIf="videoUrl" width="560" height="315" [src]="videoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-        <app-stats-container class="statsContainer"></app-stats-container>
+        <ng-container *ngIf="youtubeInfo$ | async as ytInfo">
+            <app-stats-container
+                *ngIf="!!ytInfo.title"
+                class="statsContainer"
+                [title]="ytInfo.title"
+                [author]="ytInfo.author"
+                [description]="ytInfo.description"
+                [views]="ytInfo.viewCount"
+          ></app-stats-container>
+        </ng-container>
     </div>
     
         <div class="youtubeLink">
