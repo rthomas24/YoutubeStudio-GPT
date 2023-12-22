@@ -12,15 +12,12 @@ import { selectActiveTabs } from 'src/app/events/youtube.selectors';
 })
 export class ContentTabsComponent implements OnInit{
   @Input() items: MenuItem[] | undefined;
-
   @Input() activeItem: MenuItem | undefined;
 
   public activeTabs$: Observable<string[]>
 
   constructor(private store: Store){
     this.activeTabs$ = this.store.select(selectActiveTabs)
-
-    
   }
 
   ngOnInit(): void {

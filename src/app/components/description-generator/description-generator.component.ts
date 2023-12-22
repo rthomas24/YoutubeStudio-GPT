@@ -26,9 +26,9 @@ export class DescriptionGeneratorComponent {
     this.aiGenereatedDescriptions$ =  this.store.select(selectGeneratedDescriptions)
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
 
-    this.aiGenereatedDescriptions$.subscribe((a) => {
-      console.log(JSON.stringify(a, null, '\t'))
-    })
+    // this.aiGenereatedDescriptions$.subscribe((a) => {
+    //   console.log(JSON.stringify(a, null, '\t'))
+    // })
   }
 
   generateDescription(): void {
@@ -62,8 +62,6 @@ export class DescriptionGeneratorComponent {
     } else {
         this.tones = [...this.tones, tone];
     }
-
-    console.log(this.tones)
   }
   
 }
