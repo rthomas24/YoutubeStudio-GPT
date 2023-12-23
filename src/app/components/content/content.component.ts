@@ -27,34 +27,6 @@ export class ContentComponent implements OnInit {
   public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
   public getActiveTabs$: Observable<any>
 
-  public leftSide = [
-    {
-      label: 'Import API Key',
-      icon: 'pi pi-fw pi-lock',
-      key: 'key',
-      group: 'left',
-    },
-    {
-      label: 'Video Transcript',
-      icon: 'pi pi-fw pi-file',
-      key: 'transcript',
-      group: 'left',
-    },
-  ]
-  public rightSide = [
-    {
-      label: 'Description AI',
-      icon: 'pi pi-fw pi-youtube',
-      key: 'description',
-      group: 'right',
-    },
-    {
-      label: 'Chat Bot',
-      icon: 'pi pi-fw pi-comment',
-      key: 'chat',
-      group: 'right',
-    },
-  ]
   constructor(
     private youtubeService: YoutubeService,
     private store: Store

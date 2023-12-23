@@ -1,20 +1,25 @@
 <div class="noKeyContainer">
-  <p class="helperClass">AI Helper</p>
-  <p class="importKey">Import an OpenAI API Key to use the Ai Helper</p>
+  <ng-container *ngIf="(hasKeyUploaded$ | async) === false">
+    <p class="helperClass">AI Helper</p>
+    <p class="importKey">Import an OpenAI API Key to use the Ai Helper</p>
 
-  <div class="keyContainer">
-    <p class="apiKey">OpenAI Api Key:</p>
-    <input
-      placeholder="Enter OpenAi API Key"
-      class="APIinputbar"
-      type="text"
-      [(ngModel)]="apiKeyValue"
-    />
-    <button
-      pButton
-      class="apiLock"
-      (click)="storeApiKey()"
-      icon="pi pi-lock"
-    ></button>
-  </div>
+    <div class="keyContainer">
+      <p class="apiKey">OpenAI Api Key:</p>
+      <input
+        placeholder="Enter OpenAi API Key"
+        class="APIinputbar"
+        type="text"
+        [(ngModel)]="apiKeyValue"
+      />
+      <button
+        pButton
+        class="apiLock"
+        (click)="storeApiKey()"
+        icon="pi pi-lock"
+      ></button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(hasKeyUploaded$ | async) === true">
+    <p>Key Uploaded</p>
+  </ng-container>
 </div>
