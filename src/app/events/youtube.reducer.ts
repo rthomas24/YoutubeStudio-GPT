@@ -33,10 +33,38 @@ const initialState: YoutubeState = {
   timestamps: [],
   activeTabs: [
     {
-      left: 'transcript',
+      left: [
+        {
+          label: 'Import API Key',
+          icon: 'pi pi-fw pi-lock',
+          key: 'key',
+          group: 'left',
+        },
+        {
+          label: 'Video Transcript',
+          icon: 'pi pi-fw pi-file',
+          key: 'transcript',
+          group: 'left',
+        },
+      ],
+      activeTab: 'key',
     },
     {
-      right: 'description',
+      right: [
+        {
+          label: 'Description AI',
+          icon: 'pi pi-fw pi-youtube',
+          key: 'description',
+          group: 'right',
+        },
+        {
+          label: 'Chat Bot',
+          icon: 'pi pi-fw pi-comment',
+          key: 'chat',
+          group: 'right',
+        },
+      ],
+      activeTab: 'description',
     },
   ],
   hasUploadedKey: false,
@@ -70,10 +98,17 @@ export const YoutubeReducer = createReducer(
       generatedDescriptions: [...state.generatedDescriptions, description],
     }
   }),
-  on(changeTabs, (state: YoutubeState, { tab, tabType }) => {
+  on(changeTabs, (state: YoutubeState, { tab, tabType }): YoutubeState => {
     let updatedActiveTabs = state.activeTabs.map((tabItem: any) => {
       if (tabItem.hasOwnProperty(tabType)) {
-        return { [tabType]: tab }
+        const tabExists = tabItem[tabType].some((item: any) => item.key === tab)
+        if (tabExists) {
+          return {
+            ...tabItem,
+            [tabType]: [...tabItem[tabType]],
+            activeTab: tab,
+          }
+        }
       }
       return tabItem
     })

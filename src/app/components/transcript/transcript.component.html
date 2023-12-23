@@ -1,0 +1,15 @@
+<div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
+  <p-header class="noUrl" *ngIf="!youtubeInfo.title">
+    <h2 class="p-text-center">
+      Please enter a Youtube URL to get a Transcript
+    </h2>
+  </p-header>
+
+  <p-header>
+    <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+  </p-header>
+
+  <div class="transcript">
+    <p>{{ youtubeInfo.transcript }}</p>
+  </div>
+</div>

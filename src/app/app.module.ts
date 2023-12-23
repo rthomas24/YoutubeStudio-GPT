@@ -29,6 +29,7 @@ import { DialogModule } from 'primeng/dialog'
 import { InputTextareaModule } from 'primeng/inputtextarea'
 import { ContentComponent } from './components/content/content.component'
 import { ChatBotComponent } from './components/chat-bot/chat-bot.component'
+import { TranscriptComponent } from './components/transcript/transcript.component'
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ChatBotComponent } from './components/chat-bot/chat-bot.component'
     ContentTabsComponent,
     ContentComponent,
     ChatBotComponent,
+    TranscriptComponent,
   ],
   imports: [
     BrowserModule,
