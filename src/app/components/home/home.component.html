@@ -1,52 +1,62 @@
 <div class="homeContainer">
-    <app-top-nav></app-top-nav>
+  <app-top-nav></app-top-nav>
 
-    <div class="headerContainer">
-        <div class="titleBackground">
-            <h1 class="title">All-In-One Innovative Companion for YouTube Creativity</h1>
-        </div>
-
+  <div class="headerContainer">
+    <div class="titleBackground">
+      <h1 class="title">
+        All-In-One Innovative Companion for YouTube Creativity
+      </h1>
     </div>
+  </div>
 
-    <div class="videoContainer">
-        <iframe class="video" *ngIf="videoUrl" width="560" height="315" [src]="videoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <div class="videoContainer">
+    <iframe
+      class="video"
+      *ngIf="videoUrl"
+      width="560"
+      height="315"
+      [src]="videoUrl"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    >
+    </iframe>
 
-        <ng-container *ngIf="youtubeInfo$ | async as ytInfo">
-            <app-stats-container
-                *ngIf="!!ytInfo.title"
-                class="statsContainer"
-                [title]="ytInfo.title"
-                [author]="ytInfo.author"
-                [description]="ytInfo.description"
-                [views]="ytInfo.viewCount"
-          ></app-stats-container>
-        </ng-container>
+    <ng-container *ngIf="youtubeInfo$ | async as ytInfo">
+      <app-stats-container
+        *ngIf="!!ytInfo.title"
+        class="statsContainer"
+        [title]="ytInfo.title"
+        [author]="ytInfo.author"
+        [description]="ytInfo.description"
+        [views]="ytInfo.viewCount"
+      ></app-stats-container>
+    </ng-container>
+  </div>
+
+  <div class="youtubeLink">
+    <div class="p-inputgroup">
+      <input
+        class="youtubeInput"
+        pInputText
+        placeholder="https://www.youtube.com/..."
+        id="username"
+        aria-describedby="username-help"
+        [(ngModel)]="youtubeUrl"
+      />
+      <button
+        class="transcriptBtn"
+        (click)="getTranscript()"
+        type="button"
+        pButton
+        icon="pi pi-send"
+        styleClass="p-button-warn"
+      ></button>
     </div>
-    
-        <div class="youtubeLink">
-            
-            <div class="p-inputgroup">
-                <input 
-                    class="youtubeInput" 
-                    pInputText 
-                    placeholder="https://www.youtube.com/..." 
-                    id="username" 
-                    aria-describedby="username-help" 
-                    [(ngModel)]="youtubeUrl" 
-                />
-                <button 
-                    class="transcriptBtn" 
-                    (click)="getTranscript()" 
-                    type="button" pButton 
-                    icon="pi pi-send" 
-                    styleClass="p-button-warn"
-                ></button>
-            </div>
-        </div>
-    
+  </div>
 
-    <div class="contentContainer">
-        <app-content></app-content>
-    </div>
-
+  <div class="contentContainer">
+    <app-content></app-content>
+  </div>
 </div>

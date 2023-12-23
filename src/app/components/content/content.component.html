@@ -1,44 +1,45 @@
 <div class="aiContainer">
-    <div class="tabsContainer">
-        <app-content-tabs
-            [items]="leftSide" 
-            [activeItem]="leftSide[1]"
-        >
-        </app-content-tabs>
+  <div class="tabsContainer">
+    <app-content-tabs [items]="leftSide" [activeItem]="leftSide[1]">
+    </app-content-tabs>
 
-        <app-api-key *ngIf="(hasKeyUploaded$ | async) === false" ></app-api-key>
+    <app-api-key *ngIf="(hasKeyUploaded$ | async) === false"></app-api-key>
 
-        <ng-container *ngIf="(hasKeyUploaded$ | async) === true">
-            <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
-                <p-header class="noUrl" *ngIf="!youtubeInfo.title">
-                    <h2 class="p-text-center">Please enter a Youtube URL to get a Transcript</h2>
-                </p-header>
+    <ng-container *ngIf="(hasKeyUploaded$ | async) === true">
+      <div
+        *ngIf="youtubeInfo$ | async as youtubeInfo"
+        class="transcriptContainer"
+      >
+        <p-header class="noUrl" *ngIf="!youtubeInfo.title">
+          <h2 class="p-text-center">
+            Please enter a Youtube URL to get a Transcript
+          </h2>
+        </p-header>
 
-                <p-header>
-                    <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
-                </p-header>
-        
-                <div class="transcript">
-                    <p>{{ youtubeInfo.transcript }}</p>
-                </div>
-            </div>
+        <p-header>
+          <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+        </p-header>
 
-        </ng-container>
-    </div>
-
-    
-
-    <div  class="tabsContainer">
-        <app-content-tabs
-            [items]="rightSide" 
-            [activeItem]="rightSide[0]"
-        >
-        </app-content-tabs>
-        <div *ngIf="getActiveTabs$ | async as tabs" class="descriptionContainer" [ngStyle]="{'padding': tabs[1].right === 'chat' ? '0' : '1rem'}">
-            <app-description-generator *ngIf="tabs[1].right !== 'chat'" class="descriptionGenerator"></app-description-generator>
-            <app-chat-bot class="bot" *ngIf="tabs[1].right === 'chat'" ></app-chat-bot>
+        <div class="transcript">
+          <p>{{ youtubeInfo.transcript }}</p>
         </div>
-    </div>
+      </div>
+    </ng-container>
+  </div>
 
-    
+  <div class="tabsContainer">
+    <app-content-tabs [items]="rightSide" [activeItem]="rightSide[0]">
+    </app-content-tabs>
+    <div
+      *ngIf="getActiveTabs$ | async as tabs"
+      class="descriptionContainer"
+      [ngStyle]="{ padding: tabs[1].right === 'chat' ? '0' : '1rem' }"
+    >
+      <app-description-generator
+        *ngIf="tabs[1].right !== 'chat'"
+        class="descriptionGenerator"
+      ></app-description-generator>
+      <app-chat-bot class="bot" *ngIf="tabs[1].right === 'chat'"></app-chat-bot>
+    </div>
+  </div>
 </div>

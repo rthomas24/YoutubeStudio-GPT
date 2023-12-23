@@ -1,102 +1,95 @@
 .descriptionContainer {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    .toneContainer{
-
-        .toneTitle{
-            margin: .2rem;
-            color: #AEAEAF;
-        }
-
-        .toneOptions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            margin-top: 0.75rem;
-        
-            .btnContainer{
-                width: 29%;
-                background-color: #393B3B;
-                height: 2rem;
-                border-radius: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 1rem;
-                margin-left: 1rem;
-                transition: all 0.3s ease;
-                font-weight: 550;
-
-
-                &:hover {
-                    background-color: #DAD5FB; // Replace with your desired hover color
-                    color: black
-                }
-
-                &:active {
-                    transform: scale(0.95); // This creates a slight "shrink" effect to represent a click
-                }
-
-
-               
-            }
-        }
-        
-        .toneOptions button {
-            flex: 1 0 30%; /* grow | shrink | basis */
-            margin: 5px;
-            width: 100%;
-        }
+  .toneContainer {
+    .toneTitle {
+      margin: 0.2rem;
+      color: #aeaeaf;
     }
 
+    .toneOptions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      margin-top: 0.75rem;
 
-    .wordCountContainer{
-        margin: .2rem;
-        color: #AEAEAF;
+      .btnContainer {
+        width: 29%;
+        background-color: #393b3b;
+        height: 2rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        margin-left: 1rem;
+        transition: all 0.3s ease;
+        font-weight: 550;
 
-        .wordtitle{
-            margin-top: 0.75rem;
+        &:hover {
+          background-color: #dad5fb; // Replace with your desired hover color
+          color: black;
         }
 
-        .wordCountValue {
-            color: white;
+        &:active {
+          transform: scale(
+            0.95
+          ); // This creates a slight "shrink" effect to represent a click
         }
+      }
     }
 
+    .toneOptions button {
+      flex: 1 0 30%; /* grow | shrink | basis */
+      margin: 5px;
+      width: 100%;
+    }
+  }
 
-    .keyWordContainer{
-        margin-top: 1.75rem;
-        .keyTitle{
-            color: #AEAEAF;
-        }
+  .wordCountContainer {
+    margin: 0.2rem;
+    color: #aeaeaf;
+
+    .wordtitle {
+      margin-top: 0.75rem;
     }
 
-    .phrasesContainer {
-        .keyTitle{
-            color: #AEAEAF;
-        }
-        .pharsesTextArea{
-            width: 100%;
-        }
-        
+    .wordCountValue {
+      color: white;
     }
+  }
 
-    .genButtonContainer{
-        margin: 1rem 0;
+  .keyWordContainer {
+    margin-top: 1.75rem;
+    .keyTitle {
+      color: #aeaeaf;
     }
+  }
+
+  .phrasesContainer {
+    .keyTitle {
+      color: #aeaeaf;
+    }
+    .pharsesTextArea {
+      width: 100%;
+    }
+  }
+
+  .genButtonContainer {
+    margin: 1rem 0;
+  }
 }
 
-
 .pi.pi-info-circle {
-    &:hover {
-      color: #9A8AFB;
-      cursor: pointer;
-      transform: scale(1.3);
-    }
+  &:hover {
+    color: #9a8afb;
+    cursor: pointer;
+    transform: scale(1.3);
   }
+}
 
 .selected {
-    background-color: #9A8AFB !important;
-  }
+  background-color: #9a8afb !important;
+}

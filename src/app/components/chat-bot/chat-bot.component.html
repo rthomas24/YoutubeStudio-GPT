@@ -1,32 +1,32 @@
 <div>
-    <div class="header">
-      <p style="color: white;" class="title">AI Assistant</p>
-    </div>
-  
-    <div class="aiChatContainer">
-  
-      <div class="messageContainer">
-        <ng-container>
-              <!-- Add code for displaying the messages with the bot -->
+  <div class="header">
+    <p style="color: white" class="title">AI Assistant</p>
+  </div>
+
+  <div class="aiChatContainer">
+    <div class="messageContainer">
+      <ng-container>
+        <!-- Add code for displaying the messages with the bot -->
       </ng-container>
-  
+    </div>
+
+    <div class="textAreaContainer">
+      <div class="quickSelections">
+        <!-- Add Icons for Text to speech -->
       </div>
-  
-     
-      <div class="textAreaContainer">
-            
-          <div class="quickSelections">
-            
-              <!-- Add Icons for Text to speech -->
-          </div>
-  
-          <span style="width: 100%;">
-              <input placeholder="Ask Question..." class="textarea" id="float-input" rows="5" cols="30" [(ngModel)]="userMessage"/>
-          </span>
-         
-          <img style="width: 2rem;" src="assets/send.svg" />
-  
-      </div>
+
+      <span style="width: 100%">
+        <input
+          placeholder="Ask Question..."
+          class="textarea"
+          id="float-input"
+          rows="5"
+          cols="30"
+          [(ngModel)]="userMessage"
+        />
+      </span>
+
+      <img style="width: 2rem" src="assets/send.svg" />
+    </div>
   </div>
 </div>
-  

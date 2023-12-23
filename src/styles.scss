@@ -1,70 +1,72 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css";
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
 
-
-.p-inputgroup{
-    width: 50% !important;
-    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        color: #AEAEAF;
-      }
-        ::-moz-placeholder { /* Firefox 19+ */
-        color: #AEAEAF;
-      }
-       :-ms-input-placeholder { /* IE 10+ */
-        color: #AEAEAF;
-      }
-       :-moz-placeholder { /* Firefox 18- */
-        color: #AEAEAF;
-      }
+.p-inputgroup {
+  width: 50% !important;
+  ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #aeaeaf;
+  }
+  ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #aeaeaf;
+  }
+  :-ms-input-placeholder {
+    /* IE 10+ */
+    color: #aeaeaf;
+  }
+  :-moz-placeholder {
+    /* Firefox 18- */
+    color: #aeaeaf;
+  }
 }
 
 body {
-    background: #525252;//linear-gradient(180deg, #000 0%, #9A8AFB 100%);
-    /* This ensures the background covers the entire body, even if there's scrolling */
-    min-height: 100vh;
-    margin: 0;
-    padding: 0rem 0rem;
-    /* This is to ensure the background covers the entire body */
-    background-attachment: fixed;
+  background: #525252; //linear-gradient(180deg, #000 0%, #9A8AFB 100%);
+  /* This ensures the background covers the entire body, even if there's scrolling */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0rem 0rem;
+  /* This is to ensure the background covers the entire body */
+  background-attachment: fixed;
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    background: #DAD5FB;
-    // background: #2A2A2A;
-    color: rgb(0, 0, 0);
-    border-color: #9A8AFB;
+  background: #dad5fb;
+  // background: #2A2A2A;
+  color: rgb(0, 0, 0);
+  border-color: #9a8afb;
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-    background: #2A2A2A;
-    color: white;
+  background: #2a2a2a;
+  color: white;
 }
 
 .p-tabmenu .p-tabmenu-nav {
-    background: transparent;
-    border: 2px solid transparent;
+  background: transparent;
+  border: 2px solid transparent;
 }
 
-
-.p-slider .p-slider-range{
-    background: #9A8AFB;
+.p-slider .p-slider-range {
+  background: #9a8afb;
 }
 
-
-.p-chips, .p-chips .p-chips-multiple-container {
-    width: 100%;
-    max-height: 4rem;
-    overflow-y: scroll;
-    border-radius: 0.5rem;
+.p-chips,
+.p-chips .p-chips-multiple-container {
+  width: 100%;
+  max-height: 4rem;
+  overflow-y: scroll;
+  border-radius: 0.5rem;
 }
 
-
-p-button,genBtn {
-    .p-button {
-        width: 100% !important;
-        background: #9A8AFB;
-        border: none;
-        display: block;
-    }
+p-button,
+genBtn {
+  .p-button {
+    width: 100% !important;
+    background: #9a8afb;
+    border: none;
+    display: block;
+  }
 }
