@@ -1,9 +1,10 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable, filter, take } from 'rxjs'
 import { getAIYoutubeDescription } from 'src/app/events/youtube.actions'
 import {
   selectGeneratedDescriptions,
+  selectGeneratingStatus,
   selectYoutubeInfo,
 } from 'src/app/events/youtube.selectors'
 import {
@@ -16,7 +17,7 @@ import {
   templateUrl: './description-generator.component.html',
   styleUrls: ['./description-generator.component.scss'],
 })
-export class DescriptionGeneratorComponent {
+export class DescriptionGeneratorComponent implements OnInit {
   public tones: string[] = []
   public toneOptions: string[] = [
     'Happy',
@@ -31,6 +32,9 @@ export class DescriptionGeneratorComponent {
   public phrases: string = ''
   public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
   public youtubeInfo$: Observable<YoutubeInfo>
+  public generatingStatus$: Observable<boolean>
+  public currentlyGenerating = false
+  public currentView = 'x'
   visible: boolean = false
 
   constructor(private store: Store) {
@@ -39,9 +43,13 @@ export class DescriptionGeneratorComponent {
     )
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
 
-    // this.aiGenereatedDescriptions$.subscribe((a) => {
-    //   console.log(JSON.stringify(a, null, '\t'))
-    // })
+    this.generatingStatus$ = this.store.select(selectGeneratingStatus)
+  }
+
+  ngOnInit(): void {
+    this.generatingStatus$.subscribe(status => {
+      this.currentlyGenerating = status
+    })
   }
 
   generateDescription(): void {
@@ -85,6 +93,10 @@ export class DescriptionGeneratorComponent {
     } else {
       this.tones = [...this.tones, tone]
     }
+  }
+
+  generateNav(view: string) {
+    this.currentView = view
   }
 }
 

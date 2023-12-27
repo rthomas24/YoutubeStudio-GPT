@@ -6,6 +6,7 @@ import {
 } from '../services/youtube.service'
 import {
   changeTabs,
+  getAIYoutubeDescription,
   getAIYoutubeDescriptionSuccess,
   getYoutubeInfoSuccess,
   getYoutubeTimestampsSuccess,
@@ -20,6 +21,7 @@ export interface YoutubeState {
   activeTabs: any
   hasUploadedKey: boolean
   generatedDescriptions: ChatCompletionResponse[]
+  currentlyGeneratingDescription: boolean
 }
 
 const initialState: YoutubeState = {
@@ -69,6 +71,7 @@ const initialState: YoutubeState = {
   ],
   hasUploadedKey: false,
   generatedDescriptions: [],
+  currentlyGeneratingDescription: false,
 }
 
 export const YoutubeReducer = createReducer(
@@ -80,7 +83,6 @@ export const YoutubeReducer = createReducer(
     }
   }),
   on(getYoutubeTimestampsSuccess, (state: YoutubeState, { timestamps }) => {
-    // console.log(JSON.stringify(timestamps, null, '\t'))
     return {
       ...state,
       timestamps,
@@ -92,10 +94,17 @@ export const YoutubeReducer = createReducer(
       hasUploadedKey: key,
     }
   }),
+  on(getAIYoutubeDescription, (state: YoutubeState): YoutubeState => {
+    return {
+      ...state,
+      currentlyGeneratingDescription: true,
+    }
+  }),
   on(getAIYoutubeDescriptionSuccess, (state: YoutubeState, { description }) => {
     return {
       ...state,
       generatedDescriptions: [...state.generatedDescriptions, description],
+      currentlyGeneratingDescription: false,
     }
   }),
   on(changeTabs, (state: YoutubeState, { tab, tabType }): YoutubeState => {

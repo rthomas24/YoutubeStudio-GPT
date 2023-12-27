@@ -30,6 +30,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea'
 import { ContentComponent } from './components/content/content.component'
 import { ChatBotComponent } from './components/chat-bot/chat-bot.component'
 import { TranscriptComponent } from './components/transcript/transcript.component'
+import { ProgressSpinnerModule } from 'primeng/progressspinner'
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { TranscriptComponent } from './components/transcript/transcript.componen
     SliderModule,
     ChipsModule,
     InputTextareaModule,
+    ProgressSpinnerModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),

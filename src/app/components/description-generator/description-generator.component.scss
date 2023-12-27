@@ -3,9 +3,27 @@
   height: 100%;
 
   .toneContainer {
-    .toneTitle {
-      margin: 0.2rem;
-      color: #aeaeaf;
+    .topContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .toneTitle {
+        margin: 0.2rem;
+        color: #aeaeaf;
+      }
+
+      .descBtn {
+        width: 9.5rem;
+        height: 1.5rem;
+        background-color: #9989fa;
+        font-size: 12px;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+      }
     }
 
     .toneOptions {
@@ -29,20 +47,18 @@
         font-weight: 550;
 
         &:hover {
-          background-color: #dad5fb; // Replace with your desired hover color
+          background-color: #dad5fb;
           color: black;
         }
 
         &:active {
-          transform: scale(
-            0.95
-          ); // This creates a slight "shrink" effect to represent a click
+          transform: scale(0.95);
         }
       }
     }
 
     .toneOptions button {
-      flex: 1 0 30%; /* grow | shrink | basis */
+      flex: 1 0 30%;
       margin: 5px;
       width: 100%;
     }
@@ -92,4 +108,20 @@
 
 .selected {
   background-color: #9a8afb !important;
+}
+
+.returnBack {
+  display: flex;
+
+  .returnBtn {
+    width: 11.5rem;
+    height: 1.5rem;
+    background-color: #1d4ed8;
+    font-size: 12px;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
 }

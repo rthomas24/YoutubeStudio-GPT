@@ -26,3 +26,8 @@ export const selectGeneratedDescriptions = createSelector(
   YoutubeDataState,
   (state: YoutubeState) => state.generatedDescriptions
 )
+
+export const selectGeneratingStatus = createSelector(
+  YoutubeDataState,
+  (state: YoutubeState) => state.currentlyGeneratingDescription
+)

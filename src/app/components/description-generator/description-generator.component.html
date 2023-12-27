@@ -1,12 +1,20 @@
 <div
-  *ngIf="
-    (aiGenereatedDescriptions$ | async)?.length === 0;
-    else showDescriptions
-  "
+  *ngIf="currentView === 'genDesc'; else showDescriptions"
   class="descriptionContainer"
 >
+  <!-- <p-progressSpinner></p-progressSpinner> -->
+
   <div class="toneContainer">
-    <p class="toneTitle">TONE</p>
+    <div class="topContainer">
+      <p class="toneTitle">TONE</p>
+      <div
+        (click)="generateNav('viewDesc')"
+        *ngIf="(aiGenereatedDescriptions$ | async)?.length"
+        class="descBtn"
+      >
+        Generated Descriptions
+      </div>
+    </div>
     <div class="toneOptions">
       <ng-container *ngFor="let tones of toneOptions; let i = index">
         <div (click)="addTone(tones, $event)" class="btnContainer">
@@ -72,6 +80,11 @@
 
 <ng-template #showDescriptions>
   <ng-container *ngIf="aiGenereatedDescriptions$ | async as descriptions">
+    <div class="returnBack">
+      <div (click)="generateNav('genDesc')" class="returnBtn">
+        Generate More Descriptions
+      </div>
+    </div>
     <div *ngFor="let aiGen of descriptions">
       <p>
         {{ aiGen.summary.choices[0].message.content }}
