@@ -34,7 +34,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   public youtubeInfo$: Observable<YoutubeInfo>
   public generatingStatus$: Observable<boolean>
   public currentlyGenerating = false
-  public currentView = 'x'
+  public currentView = 'genDesc'
   visible: boolean = false
 
   constructor(private store: Store) {

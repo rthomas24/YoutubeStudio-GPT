@@ -31,3 +31,13 @@ export const selectGeneratingStatus = createSelector(
   YoutubeDataState,
   (state: YoutubeState) => state.currentlyGeneratingDescription
 )
+
+export const selectChatHistory = createSelector(
+  YoutubeDataState,
+  (state: YoutubeState) => state.chatMessages
+)
+
+export const selectChatLoadStatus = createSelector(
+  YoutubeDataState,
+  (state: YoutubeState) => state.currentlyLoadingResponse
+)

@@ -95,6 +95,23 @@ export class YoutubeService {
       )
   }
 
+  public chatWithYTVideo(
+    transcript: string,
+    userPrompt: string,
+    chatHistory: []
+  ): Observable<string> {
+    const headers = { 'x-api-key': environment.functionApiKey }
+    const url = environment.apiCalls.chatWithYTVideo
+    return this.http
+      .post(url, { transcript, chatHistory, userPrompt }, { headers, responseType: 'text' })
+      .pipe(
+        map((data: any) => {
+          const parsedData = JSON.parse(data)
+          return parsedData.summary
+        })
+      )
+  }
+
   public formatTranscript(transcript: string) {
     const sentences = transcript.split('. ')
 
