@@ -16,6 +16,9 @@ import {
   getYoutubeTimestamps,
   getYoutubeTimestampsError,
   getYoutubeTimestampsSuccess,
+  sendNewChatMessage,
+  sendNewChatMessageError,
+  sendNewChatMessageSuccess,
 } from './youtube.actions'
 
 @Injectable()
@@ -44,6 +47,18 @@ export class YoutubeEffects {
         this.youtubeService.getYoutubeTimestampTranscript(youtubeUrl).pipe(
           map(timestamps => getYoutubeTimestampsSuccess({ timestamps })),
           catchError(error => of(getYoutubeTimestampsError({ error })))
+        )
+      )
+    )
+  )
+
+  chatWithYTVideo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(sendNewChatMessage),
+      switchMap(({ transcript, chatHistory, userPrompt }) =>
+        this.youtubeService.chatWithYTVideo(transcript, userPrompt, chatHistory).pipe(
+          map(response => sendNewChatMessageSuccess({ response })),
+          catchError(error => of(sendNewChatMessageError({ error })))
         )
       )
     )

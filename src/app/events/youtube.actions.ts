@@ -54,3 +54,16 @@ export const getAIYoutubeDescriptionError = createAction(
   '[Youtube] Get Youtube AI Description Error',
   props<{ error: Error }>()
 )
+
+export const sendNewChatMessage = createAction(
+  '[Youtube] Chat with AI YT Video',
+  props<{ transcript: string; chatHistory: [], userPrompt: string }>()
+)
+export const sendNewChatMessageSuccess = createAction(
+  '[Youtube] Chat with AI YT Video Success',
+  props<{ response: string }>()
+)
+export const sendNewChatMessageError = createAction(
+  '[Youtube] Chat with AI YT Video Error',
+  props<{ error: Error }>()
+)
