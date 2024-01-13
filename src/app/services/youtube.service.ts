@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment'
 import { Observable, map } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { GenerateDescription } from '../components/description-generator/description-generator.component'
+import { ChatHistory } from '../events/youtube.reducer'
 
 @Injectable({
   providedIn: 'root',
@@ -98,7 +99,7 @@ export class YoutubeService {
   public chatWithYTVideo(
     transcript: string,
     userPrompt: string,
-    chatHistory: []
+    chatHistory: ChatHistory[]
   ): Observable<string> {
     const headers = { 'x-api-key': environment.functionApiKey }
     const url = environment.apiCalls.chatWithYTVideo
