@@ -2,79 +2,86 @@
   *ngIf="currentView === 'genDesc'; else showDescriptions"
   class="descriptionContainer"
 >
-  <!-- <p-progressSpinner></p-progressSpinner> -->
 
-  <div class="toneContainer">
-    <div class="topContainer">
-      <p class="toneTitle">TONE</p>
-      <div
-        (click)="generateNav('viewDesc')"
-        *ngIf="(aiGenereatedDescriptions$ | async)?.length"
-        class="descBtn"
-      >
-        Generated Descriptions
+  <ng-container *ngIf="!currentlyGenerating">
+    <div class="toneContainer">
+      <div class="topContainer">
+        <p class="toneTitle">TONE</p>
+        <div
+          (click)="generateNav('viewDesc')"
+          *ngIf="(aiGenereatedDescriptions$ | async)?.length"
+          class="descBtn"
+        >
+          Generated Descriptions
+        </div>
+      </div>
+      <div class="toneOptions">
+        <ng-container *ngFor="let tones of toneOptions; let i = index">
+          <div (click)="addTone(tones, $event)" class="btnContainer">
+            {{ tones }}
+          </div>
+        </ng-container>
       </div>
     </div>
-    <div class="toneOptions">
-      <ng-container *ngFor="let tones of toneOptions; let i = index">
-        <div (click)="addTone(tones, $event)" class="btnContainer">
-          {{ tones }}
-        </div>
-      </ng-container>
-    </div>
-  </div>
-
-  <div class="wordCountContainer">
-    <p class="wordtitle">
-      WORD COUNT: <span class="wordCountValue">{{ wordCount }}</span>
-    </p>
-    <div>
-      <p-slider [(ngModel)]="wordCount" [step]="50" [max]="1000"></p-slider>
-    </div>
-  </div>
-
-  <div class="keyWordContainer">
-    <p class="keyTitle">
-      KEY WORDS <span (click)="setVisible()" class="pi pi-info-circle"></span>
-    </p>
-    <p-dialog
-      header="Instructions"
-      [(visible)]="visible"
-      [style]="{ width: '50vw' }"
-    >
-      <p>
-        Add key words to describe your description. Press Enter after the word.
+  
+    <div class="wordCountContainer">
+      <p class="wordtitle">
+        WORD COUNT: <span class="wordCountValue">{{ wordCount }}</span>
       </p>
-    </p-dialog>
-    <p-chips [(ngModel)]="keywords"></p-chips>
-  </div>
-  <div class="phrasesContainer">
-    <p class="keyTitle">
-      PHRASES <span (click)="setVisible()" class="pi pi-info-circle"></span>
-    </p>
-    <p-dialog
-      header="Instructions"
-      [(visible)]="visible"
-      [style]="{ width: '50vw' }"
-    >
-      <p>Add phrases to describe your description.</p>
-    </p-dialog>
-    <textarea
-      class="pharsesTextArea"
-      rows="5"
-      cols="30"
-      pInputTextarea
-      [(ngModel)]="phrases"
-    ></textarea>
-  </div>
+      <div>
+        <p-slider [(ngModel)]="wordCount" [step]="50" [max]="1000"></p-slider>
+      </div>
+    </div>
+  
+    <div class="keyWordContainer">
+      <p class="keyTitle">
+        KEY WORDS <span (click)="setVisible()" class="pi pi-info-circle"></span>
+      </p>
+      <p-dialog
+        header="Instructions"
+        [(visible)]="visible"
+        [style]="{ width: '50vw' }"
+      >
+        <p>
+          Add key words to describe your description. Press Enter after the word.
+        </p>
+      </p-dialog>
+      <p-chips [(ngModel)]="keywords"></p-chips>
+    </div>
+    <div class="phrasesContainer">
+      <p class="keyTitle">
+        PHRASES <span (click)="setVisible()" class="pi pi-info-circle"></span>
+      </p>
+      <p-dialog
+        header="Instructions"
+        [(visible)]="visible"
+        [style]="{ width: '50vw' }"
+      >
+        <p>Add phrases to describe your description.</p>
+      </p-dialog>
+      <textarea
+        class="pharsesTextArea"
+        rows="5"
+        cols="30"
+        pInputTextarea
+        [(ngModel)]="phrases"
+      ></textarea>
+    </div>
 
-  <div class="genButtonContainer">
-    <p-button
-      (click)="generateDescription()"
-      class="genBtn"
-      icon="pi pi-bolt"
-      label="Generate"
-    ></p-button>
+    <div class="genButtonContainer">
+      <p-button
+        (click)="generateDescription()"
+        class="genBtn"
+        icon="pi pi-bolt"
+        label="Generate"
+      ></p-button>
+    </div>
+
+  </ng-container>
+
+  <div *ngIf="currentlyGenerating" class="spinnerContainer">
+    <h4>GENERATING NEW DESCRIPTION</h4>
+    <p-progressSpinner></p-progressSpinner>
   </div>
 </div>
 

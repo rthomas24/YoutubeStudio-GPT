@@ -5,6 +5,7 @@ import {
   YoutubeTimestamps,
 } from '../services/youtube.service'
 import { GenerateDescription } from '../components/description-generator/description-generator.component'
+import { ChatHistory } from './youtube.reducer'
 
 export const getYoutubeInfo = createAction(
   '[Youtube] Get Youtube Info',
@@ -57,7 +58,7 @@ export const getAIYoutubeDescriptionError = createAction(
 
 export const sendNewChatMessage = createAction(
   '[Youtube] Chat with AI YT Video',
-  props<{ transcript: string; chatHistory: [], userPrompt: string }>()
+  props<{ transcript: string; chatHistory: ChatHistory[], userPrompt: string }>()
 )
 export const sendNewChatMessageSuccess = createAction(
   '[Youtube] Chat with AI YT Video Success',

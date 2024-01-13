@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { Observable, take } from 'rxjs'
+import { Observable, combineLatest, take } from 'rxjs'
 import { sendNewChatMessage } from 'src/app/events/youtube.actions'
 import { ChatHistory } from 'src/app/events/youtube.reducer'
 import { selectChatHistory, selectChatLoadStatus, selectYoutubeInfo } from 'src/app/events/youtube.selectors'
@@ -25,9 +25,13 @@ export class ChatBotComponent {
 
 
   sendMessage(){
-    this.youtubeInfo$.pipe(take(1)).subscribe((info) => {
-      this.store.dispatch(sendNewChatMessage({transcript: info.transcript, chatHistory: [], userPrompt: this.userMessage}))
-      this.userMessage = ''
+    combineLatest([this.youtubeInfo$, this.chatHistory$])
+      .pipe(take(1)).subscribe((dataArr) => {
+        const youtubeInfo = dataArr[0]
+        const chatHistory = dataArr[1]
+        const lastThreeMessages = chatHistory.slice(-3);
+        this.store.dispatch(sendNewChatMessage({transcript: youtubeInfo.transcript, chatHistory: lastThreeMessages, userPrompt: this.userMessage}))
+        this.userMessage = ''
     })
   }
 }
