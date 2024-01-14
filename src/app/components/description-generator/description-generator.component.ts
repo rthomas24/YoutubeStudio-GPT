@@ -35,6 +35,10 @@ export class DescriptionGeneratorComponent implements OnInit {
   public generatingStatus$: Observable<boolean>
   public currentlyGenerating = false
   public currentView = 'genDesc'
+
+  categories: Categories[] | undefined;
+  selectedCategory: Categories | undefined;
+
   visible: boolean = false
 
   constructor(private store: Store) {
@@ -50,12 +54,42 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.generatingStatus$.subscribe(status => {
       this.currentlyGenerating = status
     })
+
+    this.categories = [
+      { name: 'Gaming', code: 'GM' },
+      { name: 'Technology', code: 'TECH' },
+      { name: 'Vlogging', code: 'VLOG' },
+      { name: 'Education', code: 'EDU' },
+      { name: 'Music', code: 'MUS' },
+      { name: 'Cooking', code: 'COOK' },
+      { name: 'Travel', code: 'TRV' },
+      { name: 'Fashion', code: 'FSH' },
+      { name: 'Fitness', code: 'FIT' },
+      { name: 'Comedy', code: 'CMD' },
+      { name: 'Animation', code: 'ANIM' },
+      { name: 'Sports', code: 'SPRT' },
+      { name: 'Documentary', code: 'DOC' },
+      { name: 'DIY', code: 'DIY' },
+      { name: 'Beauty', code: 'BTY' },
+      { name: 'News', code: 'NEWS' },
+      { name: 'Science', code: 'SCI' },
+      { name: 'History', code: 'HIST' },
+      { name: 'Cinema', code: 'CIN' },
+      { name: 'Automotive', code: 'AUTO' },
+      { name: 'Nature', code: 'NAT' },
+      { name: 'Health', code: 'HLTH' },
+      { name: 'Literature', code: 'LIT' },
+      { name: 'Philosophy', code: 'PHIL' },
+      { name: 'Art', code: 'ART' },
+      { name: 'Gardening', code: 'GARD' }
+    ];
   }
 
   generateDescription(): void {
     const description = {
       tones: this.tones,
       wordCount: this.wordCount,
+      category: this.selectedCategory ? this.selectedCategory : '',
       keyWords: this.keywords,
       phrases: this.phrases,
     } as GenerateDescription
@@ -103,6 +137,12 @@ export class DescriptionGeneratorComponent implements OnInit {
 export interface GenerateDescription {
   tones: string[]
   wordCount: number
+  category: string
   keyWords: string[]
   phrases: string
+}
+
+export interface Categories {
+  name: string;
+  code: string;
 }

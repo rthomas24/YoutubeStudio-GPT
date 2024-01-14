@@ -24,6 +24,15 @@
       </div>
     </div>
   
+    <div class="categoryContainer">
+      <p class="categorytitle">
+        CATEGORY
+      </p>
+      <div>
+        <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" optionLabel="name" [showClear]="true" placeholder="Select a Category"></p-dropdown>
+      </div>
+    </div>
+
     <div class="wordCountContainer">
       <p class="wordtitle">
         WORD COUNT: <span class="wordCountValue">{{ wordCount }}</span>
@@ -46,11 +55,11 @@
           Add key words to describe your description. Press Enter after the word.
         </p>
       </p-dialog>
-      <p-chips [(ngModel)]="keywords"></p-chips>
+      <p-chips [(ngModel)]="keywords" placeholder="Insert Keyword's and Press Enter after each one"></p-chips>
     </div>
-    <div class="phrasesContainer">
+    <div class="instructionsContainer">
       <p class="keyTitle">
-        PHRASES <span (click)="setVisible()" class="pi pi-info-circle"></span>
+        INSTRUCTIONS <span (click)="setVisible()" class="pi pi-info-circle"></span>
       </p>
       <p-dialog
         header="Instructions"
@@ -60,8 +69,9 @@
         <p>Add phrases to describe your description.</p>
       </p-dialog>
       <textarea
-        class="pharsesTextArea"
+        class="instructionsTextArea"
         rows="5"
+        placeholder="Insert Custom Instructions for your Description"
         cols="30"
         pInputTextarea
         [(ngModel)]="phrases"
