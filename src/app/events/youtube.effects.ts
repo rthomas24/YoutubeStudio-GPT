@@ -56,10 +56,12 @@ export class YoutubeEffects {
     this.actions$.pipe(
       ofType(sendNewChatMessage),
       switchMap(({ transcript, chatHistory, userPrompt }) =>
-        this.youtubeService.chatWithYTVideo(transcript, userPrompt, chatHistory).pipe(
-          map(response => sendNewChatMessageSuccess({ response })),
-          catchError(error => of(sendNewChatMessageError({ error })))
-        )
+        this.youtubeService
+          .chatWithYTVideo(transcript, userPrompt, chatHistory)
+          .pipe(
+            map(response => sendNewChatMessageSuccess({ response })),
+            catchError(error => of(sendNewChatMessageError({ error })))
+          )
       )
     )
   )

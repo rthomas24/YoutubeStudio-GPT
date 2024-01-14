@@ -36,8 +36,8 @@ export class DescriptionGeneratorComponent implements OnInit {
   public currentlyGenerating = false
   public currentView = 'genDesc'
 
-  categories: Categories[] | undefined;
-  selectedCategory: Categories | undefined;
+  categories: Categories[] | undefined
+  selectedCategory: Categories | undefined
 
   visible: boolean = false
 
@@ -81,8 +81,8 @@ export class DescriptionGeneratorComponent implements OnInit {
       { name: 'Literature', code: 'LIT' },
       { name: 'Philosophy', code: 'PHIL' },
       { name: 'Art', code: 'ART' },
-      { name: 'Gardening', code: 'GARD' }
-    ];
+      { name: 'Gardening', code: 'GARD' },
+    ]
   }
 
   generateDescription(): void {
@@ -143,6 +143,6 @@ export interface GenerateDescription {
 }
 
 export interface Categories {
-  name: string;
-  code: string;
+  name: string
+  code: string
 }

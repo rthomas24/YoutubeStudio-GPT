@@ -8,16 +8,20 @@
       <ng-container *ngIf="chatHistory$ | async as history">
         <ng-container *ngFor="let message of history">
           <div *ngIf="message.human" class="messageBubble humanMessage">
-              <p class="messageText">{{ message.human }}</p>
+            <p class="messageText">{{ message.human }}</p>
           </div>
           <div *ngIf="message.ai" class="messageBubble aiMessage">
-              <p class="messageText">{{ message.ai }}</p>
+            <p class="messageText">{{ message.ai }}</p>
           </div>
-      </ng-container>
+        </ng-container>
 
-      <div style="display: flex; justify-content: center;" *ngIf="(isLoadingAIMessage$ | async) === true" class="messageBubble aiMessage">
+        <div
+          style="display: flex; justify-content: center"
+          *ngIf="(isLoadingAIMessage$ | async) === true"
+          class="messageBubble aiMessage"
+        >
           <p-progressSpinner></p-progressSpinner>
-      </div>
+        </div>
       </ng-container>
     </div>
 

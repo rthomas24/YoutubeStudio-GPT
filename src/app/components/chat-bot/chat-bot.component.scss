@@ -1,4 +1,4 @@
-.container{
+.container {
   background-color: white;
   border-radius: 0 0 1rem 1rem;
 
@@ -12,7 +12,7 @@
     z-index: 1;
     background-color: #12338c;
     border-radius: 0 0 1.5rem 1.5rem;
-  
+
     .title {
       font-size: 24px;
       margin: 1rem;
@@ -21,7 +21,7 @@
       color: white;
     }
   }
-  
+
   .aiChatContainer {
     position: relative;
     background: #2f2f2f;
@@ -30,7 +30,7 @@
     width: 100%;
     background-color: white;
     border-radius: 0 0 1rem 1rem;
-  
+
     .messageContainer {
       width: 100%;
       height: 34rem;
@@ -54,13 +54,13 @@
         margin: 5px 0;
         border-radius: 5px;
         min-width: 50%;
-  
+
         .messageText {
           margin: 0;
         }
       }
     }
-  
+
     .textAreaContainer {
       padding: 0.5rem 1rem 0 1rem;
       width: 100%;
@@ -70,14 +70,13 @@
       background: #12338c;
       height: 5rem;
       border-radius: 0 0 1rem 1rem;
-  
-  
+
       .quickSelections {
         height: 2.5rem;
         width: 4rem;
         font-size: 35px;
       }
-  
+
       .textarea {
         width: 95%;
         height: 3.5rem;
@@ -88,7 +87,7 @@
         color: white;
         padding-left: 1rem !important;
       }
-  
+
       .sendButton {
         height: 3.5rem;
         width: 4rem;
@@ -98,7 +97,6 @@
     }
   }
 }
-
 
 ion-spinner.spinner {
   height: 4rem;

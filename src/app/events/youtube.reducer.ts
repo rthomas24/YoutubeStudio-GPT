@@ -23,7 +23,7 @@ export interface YoutubeState {
   activeTabs: any
   hasUploadedKey: boolean
   generatedDescriptions: ChatCompletionResponse[]
-  currentlyGeneratingDescription: boolean,
+  currentlyGeneratingDescription: boolean
   currentlyLoadingResponse: boolean
   chatMessages: ChatHistory[]
 }
@@ -77,7 +77,7 @@ const initialState: YoutubeState = {
   generatedDescriptions: [],
   currentlyGeneratingDescription: false,
   currentlyLoadingResponse: false,
-  chatMessages: []
+  chatMessages: [],
 }
 
 export const YoutubeReducer = createReducer(
@@ -116,26 +116,26 @@ export const YoutubeReducer = createReducer(
   on(sendNewChatMessage, (state: YoutubeState, { userPrompt }) => {
     const newMessage: ChatHistory = {
       human: userPrompt,
-      ai: ''
+      ai: '',
     }
     return {
       ...state,
       chatMessages: [...state.chatMessages, newMessage],
-      currentlyLoadingResponse: true
+      currentlyLoadingResponse: true,
     }
   }),
   on(sendNewChatMessageSuccess, (state: YoutubeState, { response }) => {
-    let updatedChatHistory = [...state.chatMessages];
-    let lastChatEntry = { ...updatedChatHistory[updatedChatHistory.length - 1] }; // Deep copy
+    let updatedChatHistory = [...state.chatMessages]
+    let lastChatEntry = { ...updatedChatHistory[updatedChatHistory.length - 1] } // Deep copy
     if (lastChatEntry && lastChatEntry.ai === '') {
-      lastChatEntry.ai = response;
-      updatedChatHistory[updatedChatHistory.length - 1] = lastChatEntry;
+      lastChatEntry.ai = response
+      updatedChatHistory[updatedChatHistory.length - 1] = lastChatEntry
     }
-  return {
+    return {
       ...state,
       chatMessages: updatedChatHistory,
-      currentlyLoadingResponse: false
-  }
+      currentlyLoadingResponse: false,
+    }
   }),
   on(changeTabs, (state: YoutubeState, { tab, tabType }): YoutubeState => {
     let updatedActiveTabs = state.activeTabs.map((tabItem: any) => {
@@ -159,8 +159,7 @@ export const YoutubeReducer = createReducer(
   })
 )
 
-
 export type ChatHistory = {
-  human: string;
-  ai: string;
-};
+  human: string
+  ai: string
+}

@@ -14,6 +14,6 @@ export const environment = {
     getYoutubeUrl: 'https://yourApiCall.app',
     getYoutubeDescription: 'https://yourApiCall.app',
     getYoutubeTimestamps: 'https://yourApiCall.app',
-    chatWithYTVideo: 'https://yourApiCall.app'
+    chatWithYTVideo: 'https://yourApiCall.app',
   },
 }

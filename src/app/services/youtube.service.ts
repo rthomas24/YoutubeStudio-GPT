@@ -104,7 +104,11 @@ export class YoutubeService {
     const headers = { 'x-api-key': environment.functionApiKey }
     const url = environment.apiCalls.chatWithYTVideo
     return this.http
-      .post(url, { transcript, chatHistory, userPrompt }, { headers, responseType: 'text' })
+      .post(
+        url,
+        { transcript, chatHistory, userPrompt },
+        { headers, responseType: 'text' }
+      )
       .pipe(
         map((data: any) => {
           const parsedData = JSON.parse(data)

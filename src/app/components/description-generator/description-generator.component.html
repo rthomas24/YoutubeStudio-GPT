@@ -2,7 +2,6 @@
   *ngIf="currentView === 'genDesc'; else showDescriptions"
   class="descriptionContainer"
 >
-
   <ng-container *ngIf="!currentlyGenerating">
     <div class="toneContainer">
       <div class="topContainer">
@@ -23,13 +22,17 @@
         </ng-container>
       </div>
     </div>
-  
+
     <div class="categoryContainer">
-      <p class="categorytitle">
-        CATEGORY
-      </p>
+      <p class="categorytitle">CATEGORY</p>
       <div>
-        <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" optionLabel="name" [showClear]="true" placeholder="Select a Category"></p-dropdown>
+        <p-dropdown
+          [options]="categories"
+          [(ngModel)]="selectedCategory"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Select a Category"
+        ></p-dropdown>
       </div>
     </div>
 
@@ -41,7 +44,7 @@
         <p-slider [(ngModel)]="wordCount" [step]="50" [max]="1000"></p-slider>
       </div>
     </div>
-  
+
     <div class="keyWordContainer">
       <p class="keyTitle">
         KEY WORDS <span (click)="setVisible()" class="pi pi-info-circle"></span>
@@ -52,21 +55,26 @@
         [style]="{ width: '50vw' }"
       >
         <p>
-          Add key words to describe your description. Press Enter after the word.
+          Add key words to describe your description. Press Enter after the
+          word.
         </p>
       </p-dialog>
-      <p-chips [(ngModel)]="keywords" placeholder="Insert Keyword's and Press Enter after each one"></p-chips>
+      <p-chips
+        [(ngModel)]="keywords"
+        placeholder="Insert Keyword's and Press Enter after each one"
+      ></p-chips>
     </div>
     <div class="instructionsContainer">
       <p class="keyTitle">
-        INSTRUCTIONS <span (click)="setVisible()" class="pi pi-info-circle"></span>
+        INSTRUCTIONS
+        <span (click)="setVisible()" class="pi pi-info-circle"></span>
       </p>
       <p-dialog
         header="Instructions"
         [(visible)]="visible"
         [style]="{ width: '50vw' }"
       >
-        <p>Add phrases to describe your description.</p>
+        <p>Add custom instructions you want the AI to do while creating your description.</p>
       </p-dialog>
       <textarea
         class="instructionsTextArea"
@@ -86,7 +94,6 @@
         label="Generate"
       ></p-button>
     </div>
-
   </ng-container>
 
   <div *ngIf="currentlyGenerating" class="spinnerContainer">

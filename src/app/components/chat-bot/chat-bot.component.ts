@@ -3,7 +3,11 @@ import { Store } from '@ngrx/store'
 import { Observable, combineLatest, take } from 'rxjs'
 import { sendNewChatMessage } from 'src/app/events/youtube.actions'
 import { ChatHistory } from 'src/app/events/youtube.reducer'
-import { selectChatHistory, selectChatLoadStatus, selectYoutubeInfo } from 'src/app/events/youtube.selectors'
+import {
+  selectChatHistory,
+  selectChatLoadStatus,
+  selectYoutubeInfo,
+} from 'src/app/events/youtube.selectors'
 import { YoutubeInfo } from 'src/app/services/youtube.service'
 
 @Component({
@@ -17,21 +21,27 @@ export class ChatBotComponent {
   public youtubeInfo$: Observable<YoutubeInfo>
   public chatHistory$: Observable<ChatHistory[]>
 
-  constructor(private store: Store){
+  constructor(private store: Store) {
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
     this.chatHistory$ = this.store.select(selectChatHistory)
     this.isLoadingAIMessage$ = this.store.select(selectChatLoadStatus)
   }
 
-
-  sendMessage(){
+  sendMessage() {
     combineLatest([this.youtubeInfo$, this.chatHistory$])
-      .pipe(take(1)).subscribe((dataArr) => {
+      .pipe(take(1))
+      .subscribe(dataArr => {
         const youtubeInfo = dataArr[0]
         const chatHistory = dataArr[1]
-        const lastThreeMessages = chatHistory.slice(-3);
-        this.store.dispatch(sendNewChatMessage({transcript: youtubeInfo.transcript, chatHistory: lastThreeMessages, userPrompt: this.userMessage}))
+        const lastThreeMessages = chatHistory.slice(-3)
+        this.store.dispatch(
+          sendNewChatMessage({
+            transcript: youtubeInfo.transcript,
+            chatHistory: lastThreeMessages,
+            userPrompt: this.userMessage,
+          })
+        )
         this.userMessage = ''
-    })
+      })
   }
 }

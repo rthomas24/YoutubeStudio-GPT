@@ -31,7 +31,7 @@ import { ContentComponent } from './components/content/content.component'
 import { ChatBotComponent } from './components/chat-bot/chat-bot.component'
 import { TranscriptComponent } from './components/transcript/transcript.component'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownModule } from 'primeng/dropdown'
 
 @NgModule({
   declarations: [

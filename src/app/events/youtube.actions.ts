@@ -58,7 +58,11 @@ export const getAIYoutubeDescriptionError = createAction(
 
 export const sendNewChatMessage = createAction(
   '[Youtube] Chat with AI YT Video',
-  props<{ transcript: string; chatHistory: ChatHistory[], userPrompt: string }>()
+  props<{
+    transcript: string
+    chatHistory: ChatHistory[]
+    userPrompt: string
+  }>()
 )
 export const sendNewChatMessageSuccess = createAction(
   '[Youtube] Chat with AI YT Video Success',
