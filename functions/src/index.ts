@@ -92,8 +92,9 @@ export const getTimestampTranscript = onRequest(async (request, response) => {
 interface GenerateDescription {
   tones: string[]
   wordCount: number
+  category: string
   keyWords: string[]
-  phrases: string[]
+  instructions: string[]
 }
 
 export const getCustomDescription = onRequest(async (request, response) => {
@@ -135,19 +136,19 @@ export const getCustomDescription = onRequest(async (request, response) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert in creating detailed YouTube descriptions. 
-                                Your goal is to create a description for a youtube video based on the transcript of the video.
-                                The following text is a detailed summary of the transcript: 
-                                
-                                [Summary: ${res}]
-                                
-                                - Include these specific keywords: ${descriptionOptions.keyWords}
-                                - Include these specific phrases: ${descriptionOptions.phrases}
-                                - Ensure the response has approximately ${descriptionOptions.wordCount} words.
-                                - The tone should be ${descriptionOptions.tones}.
+            content: 
+                `You are a language model specialized in crafting YouTube video descriptions. 
+                Your task is to create a compelling and informative description for a YouTube video, guided by the following details extracted from the video transcript and user specifications:
 
-                                These modifications are user-defined and are intended to tailor the response to their specific requirements.
-                                `,
+              - Transcript Summary: [Summary: ${res}]
+              - Video Category: ${descriptionOptions.category}
+              - Required Keywords: ${descriptionOptions.keyWords.join(', ')}
+              - Custom Instructions from the user: ${descriptionOptions.instructions}
+              - Desired Word Count: Approximately ${descriptionOptions.wordCount} words
+              - Tone(s): ${descriptionOptions.tones.join(', ')}
+              
+              Please ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count. This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.            
+            `,
           },
           {
             role: 'user',
@@ -180,6 +181,7 @@ export const chatWithYTVideo = onRequest(async (request, response) => {
     }
     const transcript: string =
       request.body.transcript ?? ''
+    //add var for title
     const modelName = request.body.model ?? 'gpt-3.5-turbo'
     const chatHistory = request.body.chatHistory ?? []
     const userPrompt = request.body.userPrompt ?? []

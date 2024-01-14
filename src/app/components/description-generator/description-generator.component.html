@@ -29,7 +29,7 @@
         CATEGORY
       </p>
       <div>
-        <p-dropdown [options]="categories" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true" placeholder="Select a Category"></p-dropdown>
+        <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" optionLabel="name" [showClear]="true" placeholder="Select a Category"></p-dropdown>
       </div>
     </div>
 
@@ -55,7 +55,7 @@
           Add key words to describe your description. Press Enter after the word.
         </p>
       </p-dialog>
-      <p-chips [(ngModel)]="keywords" placeholder="Insert a Keyword and Press Enter after each one"></p-chips>
+      <p-chips [(ngModel)]="keywords" placeholder="Insert Keyword's and Press Enter after each one"></p-chips>
     </div>
     <div class="instructionsContainer">
       <p class="keyTitle">

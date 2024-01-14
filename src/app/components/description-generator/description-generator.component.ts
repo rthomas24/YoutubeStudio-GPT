@@ -37,7 +37,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   public currentView = 'genDesc'
 
   categories: Categories[] | undefined;
-  selectedCity: Categories | undefined;
+  selectedCategory: Categories | undefined;
 
   visible: boolean = false
 
@@ -89,6 +89,7 @@ export class DescriptionGeneratorComponent implements OnInit {
     const description = {
       tones: this.tones,
       wordCount: this.wordCount,
+      category: this.selectedCategory ? this.selectedCategory : '',
       keyWords: this.keywords,
       phrases: this.phrases,
     } as GenerateDescription
@@ -136,6 +137,7 @@ export class DescriptionGeneratorComponent implements OnInit {
 export interface GenerateDescription {
   tones: string[]
   wordCount: number
+  category: string
   keyWords: string[]
   phrases: string
 }
