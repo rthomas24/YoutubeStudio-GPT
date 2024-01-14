@@ -73,6 +73,16 @@
     }
   }
 
+  .categoryContainer {
+    margin: 0.2rem;
+    color: #aeaeaf;
+
+    .categorytitle {
+      margin-top: 0.75rem;
+    }
+
+  }
+
   .wordCountContainer {
     margin: 0.2rem;
     color: #aeaeaf;
@@ -93,11 +103,11 @@
     }
   }
 
-  .phrasesContainer {
+  .instructionsContainer {
     .keyTitle {
       color: #aeaeaf;
     }
-    .pharsesTextArea {
+    .instructionsTextArea {
       width: 100%;
     }
   }
