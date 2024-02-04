@@ -47,3 +47,6 @@ firebase.json
 src/environments/environment.ts
 
 .env
+
+# Functions
+/functions
