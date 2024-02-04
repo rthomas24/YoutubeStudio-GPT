@@ -4,10 +4,12 @@ import { Observable, filter, take } from 'rxjs'
 import {
   getAIKeyTerms,
   getAIYoutubeDescription,
+  getCustomInstructions,
 } from 'src/app/events/youtube.actions'
 import {
   selectGeneratedDescriptions,
   selectGeneratingStatus,
+  selectInstructions,
   selectKeyWords,
   selectYoutubeInfo,
 } from 'src/app/events/youtube.selectors'
@@ -34,11 +36,12 @@ export class DescriptionGeneratorComponent implements OnInit {
   ]
   public wordCount: number = 100
   public keywords: string[] = []
-  public phrases: string = ''
+  public instructions: string = ''
   public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
   public youtubeInfo$: Observable<YoutubeInfo>
   public generatingStatus$: Observable<boolean>
   public generateKeyWords$: Observable<string[]>
+  public generateInstructions$: Observable<string>
   public currentlyGenerating = false
   public currentView = 'genDesc'
   public first: number = 0
@@ -65,6 +68,8 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.generatingStatus$ = this.store.select(selectGeneratingStatus)
 
     this.generateKeyWords$ = this.store.select(selectKeyWords)
+
+    this.generateInstructions$ = this.store.select(selectInstructions)
   }
 
   ngOnInit(): void {
@@ -74,6 +79,10 @@ export class DescriptionGeneratorComponent implements OnInit {
 
     this.generateKeyWords$.subscribe(keywords => {
       this.keywords = [...this.keywords, ...keywords]
+    })
+
+    this.generateInstructions$.subscribe(instruct => {
+      this.instructions = instruct
     })
 
     this.categories = [
@@ -110,9 +119,9 @@ export class DescriptionGeneratorComponent implements OnInit {
     const description = {
       tones: this.tones,
       wordCount: this.wordCount,
-      category: this.selectedCategory ? this.selectedCategory : '',
+      category: this.selectedCategory ? this.selectedCategory.name : '',
       keyWords: this.keywords,
-      phrases: this.phrases,
+      instructions: this.instructions,
       fullTranscript: this.value === 'full',
     } as GenerateDescription
 
@@ -143,6 +152,24 @@ export class DescriptionGeneratorComponent implements OnInit {
       })
   }
 
+  generateInstructions() {
+    this.youtubeInfo$
+      .pipe(
+        take(1),
+        filter(ytInfo => !!ytInfo.transcript)
+      )
+      .subscribe(ytInfo => {
+        this.store.dispatch(
+          getCustomInstructions({
+            transcript: ytInfo.transcript,
+            category: this.selectedCategory!.name,
+            tones: this.tones,
+            keyTerms: this.keywords,
+          })
+        )
+      })
+  }
+
   setVisible(type: string) {
     this.visible = type
   }
@@ -167,7 +194,7 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.first = event.first
   }
 
-  confirm1(event: Event) {
+  confirmKeyTerms(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message:
@@ -180,6 +207,33 @@ export class DescriptionGeneratorComponent implements OnInit {
       reject: () => {},
     })
   }
+
+  confirmInstructions(event: Event) {
+    this.youtubeInfo$
+      .pipe(
+        take(1),
+        filter(ytInfo => !!ytInfo.transcript)
+      )
+      .subscribe(ytInfo => {
+        if (this.selectedCategory && this.keywords.length) {
+          this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+              'Are you sure you want to use AI to create Instructions for you?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+              this.generateInstructions()
+              // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+            },
+            reject: () => {},
+          })
+        } else {
+          alert(
+            'You must have a transcript, a category and key terms filled out'
+          )
+        }
+      })
+  }
 }
 
 export interface GenerateDescription {
@@ -187,7 +241,7 @@ export interface GenerateDescription {
   wordCount: number
   category: string
   keyWords: string[]
-  phrases: string
+  instructions: string
   fullTranscript: boolean
 }
 

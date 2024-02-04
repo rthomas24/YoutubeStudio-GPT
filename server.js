@@ -287,9 +287,78 @@ app.post('/getKeyWords', async (req, res) => {
       input: `Transcript: ${transcript}. Identify the most specific and relevant keywords that accurately reflect the video's main themes and messages, focusing on precision and relevance.`,
     })
 
-    console.log(response)
-
     res.status(200).send(response[0].args.keyWords)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).send('An error occurred')
+  }
+})
+
+app.post('/custominstructions', async (req, res) => {
+  const transcript = req.body.transcript ?? ''
+  const category = req.body.category ?? ''
+  const tones = req.body.tones ?? []
+  const keyTerms = req.body.keyTerms ?? []
+
+  const EXTRACTION_TEMPLATE = `Your task is to create custom instructions for generating a YouTube video description. These instructions should guide the language model to focus on precision and relevance, ensuring the inclusion of keywords that are most impactful and directly tied to the video's main themes and messages. The aim is to craft a description that enhances the video's discoverability while accurately reflecting its content and resonating with the intended audience. Avoid generic or overly broad terms to maintain specificity and relevance.`
+  const prompt = ChatPromptTemplate.fromMessages([
+    ['system', EXTRACTION_TEMPLATE],
+    ['human', '{input}'],
+  ])
+
+  const createCustomInstructionsSchema = z.object({
+    customInstructions: z
+      .array(
+        z.object({
+          instructionNumber: z.number(),
+          instruction: z.string().nonempty('Instruction cannot be empty'),
+        })
+      )
+      .min(1, 'At least one instruction is required'),
+  })
+
+  try {
+    const model = new ChatOpenAI({
+      openAIApiKey,
+      modelName: 'gpt-3.5-turbo-0125',
+      temperature: 0.7,
+    }).bind({
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'createCustomInstructions',
+            description:
+              'Generate concise and detailed instructions for creating a YouTube video description based on the transcript, tone, category, and key terms',
+            parameters: zodToJsonSchema(createCustomInstructionsSchema),
+          },
+        },
+      ],
+    })
+
+    const parser = new JsonOutputToolsParser()
+    const chain = prompt.pipe(model).pipe(parser)
+
+    const response = await chain.invoke({
+      input: `Transcript: ${transcript}. Tone: ${tones.join(
+        ', '
+      )}. Category: ${category}. Key Terms: ${keyTerms.join(
+        ', '
+      )}. Create concise and detailed instructions for a YouTube video description.`,
+    })
+
+    const formattedResponse = response
+      .map(item =>
+        item.args.customInstructions
+          .map(
+            instruction =>
+              `${instruction.instructionNumber}. ${instruction.instruction}`
+          )
+          .join('\n')
+      )
+      .join('\n')
+
+    res.status(200).send(formattedResponse)
   } catch (error) {
     console.error('Error:', error)
     res.status(500).send('An error occurred')

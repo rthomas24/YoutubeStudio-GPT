@@ -83,7 +83,7 @@
         <p-confirmPopup></p-confirmPopup>
         <p-button
           class="aiButton"
-          (click)="confirm1($event)"
+          (click)="confirmKeyTerms($event)"
           label="AI"
         ></p-button>
       </div>
@@ -115,7 +115,7 @@
         <p-confirmPopup></p-confirmPopup>
         <p-button
           class="aiButton"
-          (click)="confirm1($event)"
+          (click)="confirmInstructions($event)"
           label="AI"
         ></p-button>
       </div>
@@ -137,7 +137,7 @@
         placeholder="Insert Custom Instructions for your Description"
         cols="30"
         pInputTextarea
-        [(ngModel)]="phrases"
+        [(ngModel)]="instructions"
       ></textarea>
     </div>
 

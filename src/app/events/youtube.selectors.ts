@@ -46,3 +46,8 @@ export const selectKeyWords = createSelector(
   YoutubeDataState,
   (state: YoutubeState) => state.keyWords
 )
+
+export const selectInstructions = createSelector(
+  YoutubeDataState,
+  (state: YoutubeState) => state.customInstructions
+)

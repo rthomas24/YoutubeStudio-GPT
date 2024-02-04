@@ -9,6 +9,7 @@ import {
   getAIKeyTermsSuccess,
   getAIYoutubeDescription,
   getAIYoutubeDescriptionSuccess,
+  getCustomInstructionsSuccess,
   getYoutubeInfoSuccess,
   getYoutubeTimestampsSuccess,
   sendNewChatMessage,
@@ -28,6 +29,7 @@ export interface YoutubeState {
   currentlyLoadingResponse: boolean
   chatMessages: ChatHistory[]
   keyWords: string[]
+  customInstructions: string
 }
 
 const initialState: YoutubeState = {
@@ -81,6 +83,7 @@ const initialState: YoutubeState = {
   currentlyLoadingResponse: false,
   chatMessages: [],
   keyWords: [],
+  customInstructions: '',
 }
 
 export const YoutubeReducer = createReducer(
@@ -166,6 +169,15 @@ export const YoutubeReducer = createReducer(
       return {
         ...state,
         keyWords,
+      }
+    }
+  ),
+  on(
+    getCustomInstructionsSuccess,
+    (state: YoutubeState, { instructions }): YoutubeState => {
+      return {
+        ...state,
+        customInstructions: instructions,
       }
     }
   )

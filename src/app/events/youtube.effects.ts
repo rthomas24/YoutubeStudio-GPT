@@ -13,6 +13,9 @@ import {
   getAIYoutubeDescription,
   getAIYoutubeDescriptionError,
   getAIYoutubeDescriptionSuccess,
+  getCustomInstructions,
+  getCustomInstructionsError,
+  getCustomInstructionsSuccess,
   getYoutubeInfo,
   getYoutubeInfoError,
   getYoutubeInfoSuccess,
@@ -93,6 +96,22 @@ export class YoutubeEffects {
           map((keyWords: string[]) => getAIKeyTermsSuccess({ keyWords })),
           catchError(error => of(getAIKeyTermsError({ error })))
         )
+      )
+    )
+  )
+
+  youtubeAIInstructions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getCustomInstructions),
+      switchMap(({ transcript, tones, category, keyTerms }) =>
+        this.youtubeService
+          .getYoutubeCustomInstructions(transcript, tones, category, keyTerms)
+          .pipe(
+            map((instructions: string) =>
+              getCustomInstructionsSuccess({ instructions })
+            ),
+            catchError(error => of(getCustomInstructionsError({ error })))
+          )
       )
     )
   )

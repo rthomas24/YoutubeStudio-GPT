@@ -86,3 +86,22 @@ export const getAIKeyTermsError = createAction(
   '[Youtube] Get AI Key Terms Error',
   props<{ error: Error }>()
 )
+
+export const getCustomInstructions = createAction(
+  '[Youtube] Get AI Custom Instructions',
+  props<{
+    transcript: string
+    tones: string[]
+    category: string
+    keyTerms: string[]
+  }>()
+)
+
+export const getCustomInstructionsSuccess = createAction(
+  '[Youtube] Get AI Custom Instructions Success',
+  props<{ instructions: string }>()
+)
+export const getCustomInstructionsError = createAction(
+  '[Youtube] Get AI Custom Instructions Error',
+  props<{ error: Error }>()
+)

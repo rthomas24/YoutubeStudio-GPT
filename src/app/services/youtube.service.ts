@@ -123,6 +123,23 @@ export class YoutubeService {
       .post<string[]>(url, { transcript })
       .pipe(map((response: string[]) => response))
   }
+
+  public getYoutubeCustomInstructions(
+    transcript: string,
+    tones: string[],
+    category: string,
+    keyTerms: string[]
+  ): Observable<string> {
+    const url = 'http://localhost:3000/custominstructions'
+    return this.http
+      .post(
+        url,
+        { transcript, tones, category, keyTerms },
+        { responseType: 'text' }
+      )
+      .pipe(map((response: string) => response))
+  }
+
   public formatTranscript(transcript: string) {
     const sentences = transcript.split('. ')
 
