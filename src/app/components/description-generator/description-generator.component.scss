@@ -73,12 +73,22 @@
     }
   }
 
-  .categoryContainer {
-    margin: 0.2rem;
-    color: #aeaeaf;
+  .optionsContainer {
+    display: flex;
+    flex-direction: column;
 
-    .categorytitle {
-      margin-top: 0.75rem;
+    .categoryContainer {
+      margin: 0.2rem;
+      color: #aeaeaf;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .transcriptOptions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
 

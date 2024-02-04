@@ -32,6 +32,7 @@ import { ChatBotComponent } from './components/chat-bot/chat-bot.component'
 import { TranscriptComponent } from './components/transcript/transcript.component'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { DropdownModule } from 'primeng/dropdown'
+import { PaginatorModule } from 'primeng/paginator'
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { DropdownModule } from 'primeng/dropdown'
     DropdownModule,
     InputTextareaModule,
     ProgressSpinnerModule,
+    PaginatorModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),

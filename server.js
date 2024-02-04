@@ -21,11 +21,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const PORT = 3000;
+const PORT = 3000
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+  console.log(`Server listening on port ${PORT}`)
+})
 
 const openAIApiKey = process.env.OPENAI_KEY
 
@@ -73,7 +73,6 @@ app.post('/getcustomdescription', async (req, res) => {
   const transcript = req.body.transcript ?? ''
   const descriptionOptions = req.body.descriptionOptions ?? {}
   const modelName = 'gpt-3.5-turbo-0125'
-  const useFullTranscript = req.body.useFull ?? false
 
   try {
     const openaiModel = new OpenAI({ apiKey: openAIApiKey })
@@ -93,7 +92,7 @@ app.post('/getcustomdescription', async (req, res) => {
     })
 
     let transcriptSummary
-    if (!useFullTranscript) {
+    if (!descriptionOptions.fullTranscript) {
       transcriptSummary = await chain.call({
         input_documents: docs,
       })
@@ -111,23 +110,27 @@ app.post('/getcustomdescription', async (req, res) => {
                 `,
         },
         {
-            role: 'user',
-            content: `Create a YouTube video description, the category of the video is ${descriptionOptions.category}. 
+          role: 'user',
+          content: `Create a YouTube video description, the category of the video is ${
+            descriptionOptions.category
+          }. 
                 You should use the following keywords in the generated description natrually: ${descriptionOptions.keyWords.join(
-                    ', '
+                  ', '
                 )}.
                 The desired Word Count is approximately ${
-                    descriptionOptions.wordCount
+                  descriptionOptions.wordCount
                 } words. Your tone of voice for the description should be
                 ${descriptionOptions.tones.join(
-                    ', and'
+                  ', and'
                 )}. This is the custom instructions on what to add to the description: ${
-                    descriptionOptions.instructions
+                  descriptionOptions.instructions
                 }. 
                   And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill 
                   out the description: ${
-                    useFullTranscript ? transcript : transcriptSummary.text
-                }`,
+                    descriptionOptions.fullTranscript
+                      ? transcript
+                      : transcriptSummary.text
+                  }`,
         },
       ],
       model: modelName,
@@ -141,48 +144,42 @@ app.post('/getcustomdescription', async (req, res) => {
   }
 })
 
-
-
 app.post('/chatwithytvideo', async (req, res) => {
-    const transcript = req.body.transcript ?? ''
-    //add var for title
-    const modelName = req.body.model ?? 'gpt-3.5-turbo-0125'
-    const chatHistory = req.body.chatHistory ?? []
-    const userPrompt = req.body.userPrompt ?? []
-  
-    
-    try {
-        const langChainModel = new ChatOpenAI({
-            openAIApiKey,
-            modelName,
-            maxTokens: 125,
-            temperature: 0,
-        })
-  
-     
-        const textSplitter = new RecursiveCharacterTextSplitter({
-            chunkSize: 1000,
-          })
-          const docs = await textSplitter.createDocuments([transcript])
-    
-          const vectorStore = await HNSWLib.fromDocuments(
-            docs,
-            new OpenAIEmbeddings({ openAIApiKey })
-          )
-          const retriever = vectorStore.asRetriever()
-    
-          const formatChatHistoryAsString = (
-            chatHistory
-          ) => {
-            return chatHistory
-              .map(
-                interaction => `Human: ${interaction.human}\nAI: ${interaction.ai}`
-              )
-              .join('\n\n')
-          }
-    
-          const questionPrompt = PromptTemplate.fromTemplate(
-            `You are a Youtube Video AI Assistant. The context you are given is the transcript of the video
+  const transcript = req.body.transcript ?? ''
+  //add var for title
+  const modelName = req.body.model ?? 'gpt-3.5-turbo-0125'
+  const chatHistory = req.body.chatHistory ?? []
+  const userPrompt = req.body.userPrompt ?? []
+
+  try {
+    const langChainModel = new ChatOpenAI({
+      openAIApiKey,
+      modelName,
+      maxTokens: 125,
+      temperature: 0,
+    })
+
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
+    })
+    const docs = await textSplitter.createDocuments([transcript])
+
+    const vectorStore = await HNSWLib.fromDocuments(
+      docs,
+      new OpenAIEmbeddings({ openAIApiKey })
+    )
+    const retriever = vectorStore.asRetriever()
+
+    const formatChatHistoryAsString = chatHistory => {
+      return chatHistory
+        .map(
+          interaction => `Human: ${interaction.human}\nAI: ${interaction.ai}`
+        )
+        .join('\n\n')
+    }
+
+    const questionPrompt = PromptTemplate.fromTemplate(
+      `You are a Youtube Video AI Assistant. The context you are given is the transcript of the video
               you are answering questions about. Use the transcript information to answer the question with relevant
               information, if you dont know the answer just say "I am not sure".
               ----------------
@@ -193,40 +190,41 @@ app.post('/chatwithytvideo', async (req, res) => {
               QUESTION: {question}
               ----------------
               Helpful Answer:`
+    )
+
+    // Create a sequence of operations to be performed in order to generate the answer
+    const chain = RunnableSequence.from([
+      {
+        // The first operation is to extract the question from the input
+        question: input => input.question,
+        // The second operation is to format the chat history as a string
+        chatHistory: input =>
+          formatChatHistoryAsString(input.chatHistory || []) ?? '',
+        // The third operation is to retrieve relevant documents based on the question and format them as a string
+        context: async input => {
+          const relevantDocs = await retriever.getRelevantDocuments(
+            input.question
           )
-    
-          // Create a sequence of operations to be performed in order to generate the answer
-          const chain = RunnableSequence.from([
-            {
-              // The first operation is to extract the question from the input
-              question: (input) => input.question,
-              // The second operation is to format the chat history as a string
-              chatHistory: (input) => formatChatHistoryAsString(input.chatHistory || []) ?? '',
-              // The third operation is to retrieve relevant documents based on the question and format them as a string
-              context: async (input) => {
-                const relevantDocs = await retriever.getRelevantDocuments(
-                  input.question
-                )
-                const serialized = formatDocumentsAsString(relevantDocs)
-                return serialized
-              },
-            },
-            // The fourth operation is to generate the question prompt
-            questionPrompt,
-            // The fifth operation is to use the model to generate the answer
-            langChainModel,
-            // The final operation is to parse the output into a string
-            new StringOutputParser(),
-          ])
-    
-          const answer = await chain.invoke({
-            chatHistory: chatHistory,
-            question: userPrompt,
-          })
-    
-          res.send({ summary: answer })
-    } catch (error) {
-      console.error('Error:', error)
-      res.status(500).send('An error occurred')
-    }
-  })
+          const serialized = formatDocumentsAsString(relevantDocs)
+          return serialized
+        },
+      },
+      // The fourth operation is to generate the question prompt
+      questionPrompt,
+      // The fifth operation is to use the model to generate the answer
+      langChainModel,
+      // The final operation is to parse the output into a string
+      new StringOutputParser(),
+    ])
+
+    const answer = await chain.invoke({
+      chatHistory: chatHistory,
+      question: userPrompt,
+    })
+
+    res.send({ summary: answer })
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).send('An error occurred')
+  }
+})

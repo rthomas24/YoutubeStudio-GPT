@@ -35,11 +35,17 @@ export class DescriptionGeneratorComponent implements OnInit {
   public generatingStatus$: Observable<boolean>
   public currentlyGenerating = false
   public currentView = 'genDesc'
+  public first: number = 0
+  public stateOptions: any[] = [
+    { label: 'Summary', value: 'noFull' },
+    { label: 'Transcript', value: 'full' },
+  ]
+  public value: string = 'noFull'
 
-  categories: Categories[] | undefined
-  selectedCategory: Categories | undefined
+  public categories: Categories[] | undefined
+  public selectedCategory: Categories | undefined
 
-  visible: boolean = false
+  public visible: string = ''
 
   constructor(private store: Store) {
     this.aiGenereatedDescriptions$ = this.store.select(
@@ -92,6 +98,7 @@ export class DescriptionGeneratorComponent implements OnInit {
       category: this.selectedCategory ? this.selectedCategory : '',
       keyWords: this.keywords,
       phrases: this.phrases,
+      fullTranscript: this.value === 'full',
     } as GenerateDescription
 
     this.youtubeInfo$
@@ -109,8 +116,8 @@ export class DescriptionGeneratorComponent implements OnInit {
       })
   }
 
-  setVisible() {
-    this.visible = !this.visible
+  setVisible(type: string) {
+    this.visible = type
   }
 
   addTone(tone: string, event: MouseEvent) {
@@ -118,19 +125,19 @@ export class DescriptionGeneratorComponent implements OnInit {
 
     if (clickedElement.classList.contains('selected')) {
       clickedElement.classList.remove('selected')
-    } else {
-      clickedElement.classList.add('selected')
-    }
-
-    if (this.tones.includes(tone)) {
       this.tones = this.tones.filter(t => t !== tone)
-    } else {
+    } else if (this.tones.length < 2) {
+      clickedElement.classList.add('selected')
       this.tones = [...this.tones, tone]
     }
   }
 
   generateNav(view: string) {
     this.currentView = view
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first
   }
 }
 
@@ -140,9 +147,11 @@ export interface GenerateDescription {
   category: string
   keyWords: string[]
   phrases: string
+  fullTranscript: boolean
 }
 
 export interface Categories {
   name: string
   code: string
 }
+

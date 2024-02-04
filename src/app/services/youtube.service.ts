@@ -35,15 +35,14 @@ export class YoutubeService {
 
   public getYoutubeDescription(
     transcript: string,
-    descriptionOptions: GenerateDescription,
-    useFullTranscript: boolean = false
+    descriptionOptions: GenerateDescription
   ): Observable<ChatCompletionResponse> {
     const headers = { 'x-api-key': environment.functionApiKey }
     const url = 'http://localhost:3000/getcustomdescription'
     return this.http
       .post(
         url,
-        { transcript, descriptionOptions, useFull: useFullTranscript },
+        { transcript, descriptionOptions },
         { headers, responseType: 'text' }
       )
       .pipe(
