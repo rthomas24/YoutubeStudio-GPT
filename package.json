@@ -1,13 +1,15 @@
 {
   "name": "ai-youtube-description-generator",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "pretty": "prettier --write \"src/**/*.{ts,html,css,scss}\""
+    "pretty": "prettier --write \"**/*.{ts,html,css,scss,js}\"",
+    "start:server": "node server.js"
   },
   "private": true,
   "dependencies": {
@@ -21,11 +23,18 @@
     "@angular/router": "^16.2.0",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/store": "^16.3.0",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
     "firebase": "^10.6.0",
+    "hnswlib-node": "^1.4.2",
+    "langchain": "^0.1.12",
+    "openai": "^4.26.0",
     "primeicons": "^6.0.1",
     "primeng": "^16.8.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "youtube-transcript": "^1.0.6",
+    "youtubei.js": "^5.8.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

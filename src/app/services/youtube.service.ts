@@ -13,7 +13,7 @@ export class YoutubeService {
 
   public getYoutubeUrl(youtubeUrl: string): Observable<YoutubeInfo> {
     const headers = { 'x-api-key': environment.functionApiKey }
-    const url = environment.apiCalls.getYoutubeUrl
+    const url = 'http://localhost:3000/getyoutubetranscript'
     return this.http
       .post(url, { youtubeUrl }, { headers, responseType: 'text' })
       .pipe(
@@ -35,14 +35,15 @@ export class YoutubeService {
 
   public getYoutubeDescription(
     transcript: string,
-    descriptionOptions: GenerateDescription
+    descriptionOptions: GenerateDescription,
+    useFullTranscript: boolean = false
   ): Observable<ChatCompletionResponse> {
     const headers = { 'x-api-key': environment.functionApiKey }
-    const url = environment.apiCalls.getYoutubeDescription
+    const url = 'http://localhost:3000/getcustomdescription'
     return this.http
       .post(
         url,
-        { transcript, descriptionOptions },
+        { transcript, descriptionOptions, useFull: useFullTranscript },
         { headers, responseType: 'text' }
       )
       .pipe(
@@ -79,7 +80,7 @@ export class YoutubeService {
     youtubeUrl: string
   ): Observable<YoutubeTimestamps[]> {
     const headers = { 'x-api-key': environment.functionApiKey }
-    const url = environment.apiCalls.getYoutubeTimestamps
+    const url = 'http://localhost:3000/gettimestamptranscript'
     return this.http
       .post(url, { youtubeUrl }, { headers, responseType: 'text' })
       .pipe(
@@ -102,7 +103,7 @@ export class YoutubeService {
     chatHistory: ChatHistory[]
   ): Observable<string> {
     const headers = { 'x-api-key': environment.functionApiKey }
-    const url = environment.apiCalls.chatWithYTVideo
+    const url = 'http://localhost:3000/chatwithytvideo'
     return this.http
       .post(
         url,
