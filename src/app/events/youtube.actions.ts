@@ -72,3 +72,17 @@ export const sendNewChatMessageError = createAction(
   '[Youtube] Chat with AI YT Video Error',
   props<{ error: Error }>()
 )
+
+export const getAIKeyTerms = createAction(
+  '[Youtube] Get AI Key Terms',
+  props<{ transcript: string }>()
+)
+
+export const getAIKeyTermsSuccess = createAction(
+  '[Youtube] Get AI Key Terms Success',
+  props<{ keyWords: string[] }>()
+)
+export const getAIKeyTermsError = createAction(
+  '[Youtube] Get AI Key Terms Error',
+  props<{ error: Error }>()
+)

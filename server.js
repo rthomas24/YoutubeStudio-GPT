@@ -8,12 +8,16 @@ import { YoutubeTranscript } from 'youtube-transcript'
 import { ChatOpenAI } from '@langchain/openai'
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import { loadSummarizationChain } from 'langchain/chains'
-import { HNSWLib } from 'langchain/vectorstores/hnswlib'
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
-import { PromptTemplate } from 'langchain/prompts'
-import { RunnableSequence } from 'langchain/schema/runnable'
-import { StringOutputParser } from 'langchain/schema/output_parser'
+import { HNSWLib } from '@langchain/community/vectorstores/hnswlib'
+import { OpenAIEmbeddings } from '@langchain/openai'
+import { PromptTemplate } from '@langchain/core/prompts'
+import { RunnableSequence } from '@langchain/core/runnables'
+import { StringOutputParser } from '@langchain/core/output_parsers'
 import { formatDocumentsAsString } from 'langchain/util/document'
+import { z } from 'zod'
+import { zodToJsonSchema } from 'zod-to-json-schema'
+import { ChatPromptTemplate } from '@langchain/core/prompts'
+import { JsonOutputToolsParser } from 'langchain/output_parsers'
 
 dotenv.config()
 
@@ -44,7 +48,7 @@ app.post('/getyoutubetranscript', async (req, res) => {
 
     const docs = await loader.load()
 
-    res.send({ docs })
+    res.status(200).send({ docs })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).send('An error occurred')
@@ -57,7 +61,7 @@ app.post('/gettimestamptranscript', async (req, res) => {
 
     YoutubeTranscript.fetchTranscript(youtubeUrl)
       .then(result => {
-        res.send({ result })
+        res.status(200).send({ result })
       })
       .catch(error => {
         logger.error('Error reading file:', error)
@@ -115,13 +119,13 @@ app.post('/getcustomdescription', async (req, res) => {
             descriptionOptions.category
           }. 
                 You should use the following keywords in the generated description natrually: ${descriptionOptions.keyWords.join(
-                  ', '
+                  ', and '
                 )}.
                 The desired Word Count is approximately ${
                   descriptionOptions.wordCount
                 } words. Your tone of voice for the description should be
                 ${descriptionOptions.tones.join(
-                  ', and'
+                  ', and '
                 )}. This is the custom instructions on what to add to the description: ${
                   descriptionOptions.instructions
                 }. 
@@ -137,7 +141,7 @@ app.post('/getcustomdescription', async (req, res) => {
       temperature: 0.7,
     })
 
-    res.send({ summary: completion })
+    res.status(200).send({ summary: completion })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).send('An error occurred')
@@ -222,7 +226,70 @@ app.post('/chatwithytvideo', async (req, res) => {
       question: userPrompt,
     })
 
-    res.send({ summary: answer })
+    res.status(200).send({ summary: answer })
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).send('An error occurred')
+  }
+})
+
+app.post('/getKeyWords', async (req, res) => {
+  const transcript = req.body.transcript ?? ''
+
+  const EXTRACTION_TEMPLATE = `Given the importance of focusing on the most relevant and impactful keywords for a YouTube video description, your task is to extract these keywords with an emphasis on precision and relevance. It's essential to identify keywords that truly resonate with the video's content, avoiding generic or overly broad terms. The goal is to select keywords that are directly tied to the video's main themes and messages, ensuring they are not only accurate but also significantly enhance the video's discoverability and alignment with the intended audience's interests.`
+
+  const prompt = ChatPromptTemplate.fromMessages([
+    ['system', EXTRACTION_TEMPLATE],
+    ['human', '{input}'],
+  ])
+
+  const getKeyWordsSchema = z.object({
+    keyWords: z
+      .array(
+        z
+          .string()
+          .max(3, 'Each keyword should be a concise term, up to 3 words')
+          .nonempty('Keywords must be meaningful and cannot be empty')
+      )
+      .min(
+        3,
+        'A minimum of 3 keywords is required to capture the essence of the video'
+      )
+      .max(5, 'Limit to 5 keywords to maintain focus and relevance')
+      .describe(
+        "Select keywords that are closely related to the video's content, ensuring they are specific and relevant"
+      ),
+  })
+
+  try {
+    const model = new ChatOpenAI({
+      openAIApiKey,
+      modelName: 'gpt-3.5-turbo-0125',
+      temperature: 0.7,
+    }).bind({
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'getKeyWordsSchema',
+            description:
+              'Extract highly relevant keywords from a transcript for generating a YouTube video description',
+            parameters: zodToJsonSchema(getKeyWordsSchema),
+          },
+        },
+      ],
+    })
+
+    const parser = new JsonOutputToolsParser()
+    const chain = prompt.pipe(model).pipe(parser)
+
+    const response = await chain.invoke({
+      input: `Transcript: ${transcript}. Identify the most specific and relevant keywords that accurately reflect the video's main themes and messages, focusing on precision and relevance.`,
+    })
+
+    console.log(response)
+
+    res.status(200).send(response[0].args.keyWords)
   } catch (error) {
     console.error('Error:', error)
     res.status(500).send('An error occurred')

@@ -106,15 +106,64 @@
   }
 
   .keyWordContainer {
-    margin-top: 1.75rem;
+    margin-top: 1.25rem;
     .keyTitle {
       color: #aeaeaf;
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .aiSuggest {
+        display: inline-block;
+        margin-left: 0.5rem;
+        background: #dad5fb;
+        border-radius: 0.3rem;
+        width: 2rem;
+        text-align: center;
+        color: black;
+        font-weight: 600;
+
+        &:hover {
+          background-color: #9a8afb;
+          color: white;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
     }
   }
 
   .instructionsContainer {
     .keyTitle {
       color: #aeaeaf;
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+
+      .aiSuggest {
+        display: inline-block;
+        margin-left: 0.5rem;
+        background: #dad5fb;
+        border-radius: 0.3rem;
+        width: 2rem;
+        text-align: center;
+        color: black;
+        font-weight: 600;
+
+        &:hover {
+          background-color: #9a8afb;
+          color: white;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
     }
     .instructionsTextArea {
       width: 100%;

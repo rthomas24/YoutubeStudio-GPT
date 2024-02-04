@@ -7,6 +7,9 @@ import {
   YoutubeService,
 } from '../services/youtube.service'
 import {
+  getAIKeyTerms,
+  getAIKeyTermsError,
+  getAIKeyTermsSuccess,
   getAIYoutubeDescription,
   getAIYoutubeDescriptionError,
   getAIYoutubeDescriptionSuccess,
@@ -78,6 +81,18 @@ export class YoutubeEffects {
             ),
             catchError(error => of(getAIYoutubeDescriptionError({ error })))
           )
+      )
+    )
+  )
+
+  youtubeAIKeyTerms$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getAIKeyTerms),
+      switchMap(({ transcript }) =>
+        this.youtubeService.getYoutubeKeyTerms(transcript).pipe(
+          map((keyWords: string[]) => getAIKeyTermsSuccess({ keyWords })),
+          catchError(error => of(getAIKeyTermsError({ error })))
+        )
       )
     )
   )

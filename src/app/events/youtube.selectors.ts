@@ -41,3 +41,8 @@ export const selectChatLoadStatus = createSelector(
   YoutubeDataState,
   (state: YoutubeState) => state.currentlyLoadingResponse
 )
+
+export const selectKeyWords = createSelector(
+  YoutubeDataState,
+  (state: YoutubeState) => state.keyWords
+)

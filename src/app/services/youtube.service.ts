@@ -117,6 +117,12 @@ export class YoutubeService {
       )
   }
 
+  public getYoutubeKeyTerms(transcript: string): Observable<string[]> {
+    const url = 'http://localhost:3000/getKeyWords'
+    return this.http
+      .post<string[]>(url, { transcript })
+      .pipe(map((response: string[]) => response))
+  }
   public formatTranscript(transcript: string) {
     const sentences = transcript.split('. ')
 

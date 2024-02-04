@@ -33,6 +33,8 @@ import { TranscriptComponent } from './components/transcript/transcript.componen
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { DropdownModule } from 'primeng/dropdown'
 import { PaginatorModule } from 'primeng/paginator'
+import { ConfirmationService } from 'primeng/api'
+import { ConfirmPopupModule } from 'primeng/confirmpopup'
 
 @NgModule({
   declarations: [
@@ -67,11 +69,12 @@ import { PaginatorModule } from 'primeng/paginator'
     InputTextareaModule,
     ProgressSpinnerModule,
     PaginatorModule,
+    ConfirmPopupModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(youtubeFeatureKey, YoutubeReducer),
     EffectsModule.forRoot([YoutubeEffects]),
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import {
 } from '../services/youtube.service'
 import {
   changeTabs,
+  getAIKeyTermsSuccess,
   getAIYoutubeDescription,
   getAIYoutubeDescriptionSuccess,
   getYoutubeInfoSuccess,
@@ -26,6 +27,7 @@ export interface YoutubeState {
   currentlyGeneratingDescription: boolean
   currentlyLoadingResponse: boolean
   chatMessages: ChatHistory[]
+  keyWords: string[]
 }
 
 const initialState: YoutubeState = {
@@ -78,6 +80,7 @@ const initialState: YoutubeState = {
   currentlyGeneratingDescription: false,
   currentlyLoadingResponse: false,
   chatMessages: [],
+  keyWords: [],
 }
 
 export const YoutubeReducer = createReducer(
@@ -156,7 +159,16 @@ export const YoutubeReducer = createReducer(
       ...state,
       activeTabs: updatedActiveTabs,
     }
-  })
+  }),
+  on(
+    getAIKeyTermsSuccess,
+    (state: YoutubeState, { keyWords }): YoutubeState => {
+      return {
+        ...state,
+        keyWords,
+      }
+    }
+  )
 )
 
 export type ChatHistory = {

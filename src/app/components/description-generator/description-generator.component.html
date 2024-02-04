@@ -36,7 +36,6 @@
           </p>
         </span>
       </div>
-
       <p-dialog
         (click)="visible = ''"
         header="Transcript Instructions"
@@ -78,34 +77,48 @@
     </div>
 
     <div class="keyWordContainer">
-      <p class="keyTitle">
-        KEY WORDS
+      <div class="keyTitle">
+        KEY TERMS
         <span (click)="setVisible('keywords')" class="pi pi-info-circle"></span>
-      </p>
+        <p-confirmPopup></p-confirmPopup>
+        <p-button
+          class="aiButton"
+          (click)="confirm1($event)"
+          label="AI"
+        ></p-button>
+      </div>
+
       <p-dialog
         (click)="visible = ''"
-        header="Key Word Instructions"
+        header="Key Terms Instructions"
         [visible]="visible === 'keywords'"
         [style]="{ width: '50vw' }"
       >
         <p>
-          Add key words to describe your description. Press Enter after the
-          word.
+          Add key terms to describe your description. Press Enter after each
+          word. If you need help coming up with key terms, press the AI button,
+          and it will generate some for you.
         </p>
       </p-dialog>
       <p-chips
         [(ngModel)]="keywords"
-        placeholder="Insert Keyword's and Press Enter after each one"
+        placeholder="Insert Key Terms's and Press Enter after each one"
       ></p-chips>
     </div>
     <div class="instructionsContainer">
-      <p class="keyTitle">
+      <div class="keyTitle">
         INSTRUCTIONS
         <span
           (click)="setVisible('instructions')"
           class="pi pi-info-circle"
         ></span>
-      </p>
+        <p-confirmPopup></p-confirmPopup>
+        <p-button
+          class="aiButton"
+          (click)="confirm1($event)"
+          label="AI"
+        ></p-button>
+      </div>
       <p-dialog
         (click)="visible = ''"
         header="Instructions"
@@ -114,7 +127,8 @@
       >
         <p>
           Add custom instructions you want the AI to do while creating your
-          description.
+          description. If you need help coming up with custom instructions,
+          press the AI button, and it will generate some for you.
         </p>
       </p-dialog>
       <textarea
@@ -136,17 +150,6 @@
       ></p-button>
     </div>
   </ng-container>
-
-  <div
-    *ngIf="currentlyGenerating"
-    class="spinnerContainer"
-    style="text-align: center; margin: auto"
-  >
-    <p-header>
-      <h4 class="p-text-center">GENERATING NEW DESCRIPTION</h4>
-    </p-header>
-    <p-progressSpinner></p-progressSpinner>
-  </div>
 </div>
 
 <ng-template #showDescriptions>
@@ -155,6 +158,16 @@
       <div (click)="generateNav('genDesc')" class="returnBtn">
         Generate More Descriptions
       </div>
+    </div>
+    <div
+      *ngIf="currentlyGenerating"
+      class="spinnerContainer"
+      style="text-align: center; margin: auto"
+    >
+      <p-header>
+        <h4 class="p-text-center">GENERATING NEW DESCRIPTION</h4>
+      </p-header>
+      <p-progressSpinner></p-progressSpinner>
     </div>
     <p>
       {{ descriptions[first].summary.choices[0].message.content }}

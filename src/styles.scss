@@ -61,18 +61,28 @@ body {
 .p-chips,
 .p-chips .p-chips-multiple-container {
   width: 100%;
-  max-height: 4rem;
+  max-height: 7rem;
   overflow-y: scroll;
   border-radius: 0.5rem;
 }
 
-p-button,
-genBtn {
+p-button.genBtn {
   .p-button {
     width: 100% !important;
     background: #9a8afb;
     border: none;
     display: block;
+  }
+}
+
+p-button.aiButton {
+  .p-button {
+    width: 75% !important;
+    background: #9a8afb;
+    border: none;
+    display: flex;
+    justify-content: center;
+    height: 2rem;
   }
 }
 

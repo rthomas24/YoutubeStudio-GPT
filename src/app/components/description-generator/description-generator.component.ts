@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable, filter, take } from 'rxjs'
-import { getAIYoutubeDescription } from 'src/app/events/youtube.actions'
+import {
+  getAIKeyTerms,
+  getAIYoutubeDescription,
+} from 'src/app/events/youtube.actions'
 import {
   selectGeneratedDescriptions,
   selectGeneratingStatus,
+  selectKeyWords,
   selectYoutubeInfo,
 } from 'src/app/events/youtube.selectors'
 import {
   ChatCompletionResponse,
   YoutubeInfo,
 } from 'src/app/services/youtube.service'
+import { ConfirmationService } from 'primeng/api'
 
 @Component({
   selector: 'app-description-generator',
@@ -33,6 +38,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
   public youtubeInfo$: Observable<YoutubeInfo>
   public generatingStatus$: Observable<boolean>
+  public generateKeyWords$: Observable<string[]>
   public currentlyGenerating = false
   public currentView = 'genDesc'
   public first: number = 0
@@ -47,18 +53,27 @@ export class DescriptionGeneratorComponent implements OnInit {
 
   public visible: string = ''
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    private confirmationService: ConfirmationService
+  ) {
     this.aiGenereatedDescriptions$ = this.store.select(
       selectGeneratedDescriptions
     )
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
 
     this.generatingStatus$ = this.store.select(selectGeneratingStatus)
+
+    this.generateKeyWords$ = this.store.select(selectKeyWords)
   }
 
   ngOnInit(): void {
     this.generatingStatus$.subscribe(status => {
       this.currentlyGenerating = status
+    })
+
+    this.generateKeyWords$.subscribe(keywords => {
+      this.keywords = [...this.keywords, ...keywords]
     })
 
     this.categories = [
@@ -107,12 +122,24 @@ export class DescriptionGeneratorComponent implements OnInit {
         filter(ytInfo => !!ytInfo.transcript)
       )
       .subscribe(ytInfo => {
+        this.currentView = 'viewDesc'
         this.store.dispatch(
           getAIYoutubeDescription({
             transcript: ytInfo.transcript,
             generateDescription: description,
           })
         )
+      })
+  }
+
+  generateKeyWords() {
+    this.youtubeInfo$
+      .pipe(
+        take(1),
+        filter(ytInfo => !!ytInfo.transcript)
+      )
+      .subscribe(ytInfo => {
+        this.store.dispatch(getAIKeyTerms({ transcript: ytInfo.transcript }))
       })
   }
 
@@ -139,6 +166,20 @@ export class DescriptionGeneratorComponent implements OnInit {
   onPageChange(event: any) {
     this.first = event.first
   }
+
+  confirm1(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message:
+        'Are you sure you want to use AI to create Key Words and Terms for you?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.generateKeyWords()
+        // this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+      },
+      reject: () => {},
+    })
+  }
 }
 
 export interface GenerateDescription {
@@ -154,4 +195,3 @@ export interface Categories {
   name: string
   code: string
 }
-
