@@ -18,6 +18,7 @@ import { z } from 'zod'
 import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { JsonOutputToolsParser } from 'langchain/output_parsers'
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 dotenv.config()
 
@@ -32,6 +33,7 @@ app.listen(PORT, () => {
 })
 
 const openAIApiKey = process.env.OPENAI_KEY
+const googleGeminiApiKey = process.env.GEMINI_API_KEY
 
 app.post('/getyoutubetranscript', async (req, res) => {
   try {
@@ -156,12 +158,22 @@ app.post('/chatwithytvideo', async (req, res) => {
   const userPrompt = req.body.userPrompt ?? []
 
   try {
-    const langChainModel = new ChatOpenAI({
-      openAIApiKey,
-      modelName,
-      maxTokens: 125,
-      temperature: 0,
-    })
+
+    //Uncomment this if you want to use openAI instead of Google
+    // const langChainModelOpenAI = new ChatOpenAI({
+    //   openAIApiKey,
+    //   modelName,
+    //   maxTokens: 125,
+    //   temperature: 0.2,
+    // })
+
+    const langChainModelGoogle = new ChatGoogleGenerativeAI({
+        apiKey: googleGeminiApiKey,
+        modelName: "gemini-pro",
+        maxOutputTokens: 125,
+        temperature: 0.2
+    });
+    
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
@@ -216,7 +228,7 @@ app.post('/chatwithytvideo', async (req, res) => {
       // The fourth operation is to generate the question prompt
       questionPrompt,
       // The fifth operation is to use the model to generate the answer
-      langChainModel,
+      langChainModelGoogle,
       // The final operation is to parse the output into a string
       new StringOutputParser(),
     ])
