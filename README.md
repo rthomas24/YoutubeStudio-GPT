@@ -2,6 +2,9 @@
 
 Welcome to the Youtube Studio GPT, an innovative tool designed to revolutionize the way you create YouTube video descriptions. This guide will help you set up the application for local development, introduce its functionalities, and demonstrate how to utilize its features to enhance your video content effectively.
 
+![Screenshot 2024-02-11 at 2 05 36 PM](https://github.com/rthomas24/YoutubeStudio-GPT/assets/44555719/87a27b00-a975-41f2-9a47-5e152a1e58a0)
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -29,9 +32,13 @@ The Youtube Studio GPT offers two main functionalities: the Description Builder 
 ### Description Builder
 
 1. **Paste a YouTube URL**: In the URL input box, paste the URL of your YouTube video or any other video from YouTube into the designated field.
-2. **Customize Your Description**: Utilize the available text fields and tools to craft a detailed and engaging description for your video. If you're seeking inspiration, the next step will guide you.
-3. **AI Assistance**: By clicking on the "AI Button," you will activate the AI's creative suggestions and ideas. The AI will generate content based on the video URL you've provided, aiding you in creating a unique and compelling description.
-4. **Generate Descriptions**: After filling out the description builder steps, click the "Generate" button. This action will introduce a new button at the top part of the container, allowing you to navigate between your generated descriptions and the description builder. You can click the "Generate" button as many times as you wish to produce multiple descriptions, enhancing your options and creativity.
+2. **Customize Your Description**: Utilize the available text fields and tools to craft a detailed and engaging description for your video.
+3. **Choose Description Detail Level**: Decide whether you want to use the **Full Transcript** or **Summary** for generating your description.
+   - **Full Transcript**: Selecting this option will provide more detailed and accurate descriptions, leveraging the complete video transcript. However, it will consume more tokens.
+   - **Summary**: Opting for the summary will use fewer tokens but might result in descriptions that lack some important information unless specified in the instructions or key terms.
+4. **AI Assistance**: By clicking on the "AI Button," you will activate the AI's creative suggestions and ideas. The AI will generate content based on the video URL you've provided and your choice of detail level, aiding you in creating a unique and compelling description.
+5. **Generate Descriptions**: After filling out the description builder steps, click the "Generate" button. This action will introduce a new button at the top part of the container, allowing you to navigate between your generated descriptions and the description builder. You can click the "Generate" button as many times as you wish to produce multiple descriptions, enhancing your options and creativity.
+
 ### Chat Bot
 
 1. **Access the Chat Bot**: Navigate to the Chat Bot tab from the main interface.
