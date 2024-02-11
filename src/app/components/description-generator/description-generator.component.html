@@ -169,16 +169,19 @@
       </p-header>
       <p-progressSpinner></p-progressSpinner>
     </div>
-    <p>
-      {{ descriptions[first].summary.choices[0].message.content }}
-    </p>
-    <p-paginator
-      [first]="first"
-      [rows]="1"
-      [totalRecords]="descriptions.length"
-      (onPageChange)="onPageChange($event)"
-      [showJumpToPageDropdown]="true"
-      [showPageLinks]="false"
-    ></p-paginator>
+    <ng-container *ngIf="!currentlyGenerating">
+      <p>
+        {{ descriptions[first].summary.choices[0].message.content }}
+      </p>
+      <p-paginator
+        [first]="first"
+        [rows]="1"
+        [totalRecords]="descriptions.length"
+        (onPageChange)="onPageChange($event)"
+        [showJumpToPageDropdown]="true"
+        [showPageLinks]="false"
+      ></p-paginator>
+    </ng-container>
+   
   </ng-container>
 </ng-template>

@@ -44,12 +44,12 @@ const initialState: YoutubeState = {
   activeTabs: [
     {
       left: [
-        {
-          label: 'Import API Key',
-          icon: 'pi pi-fw pi-lock',
-          key: 'key',
-          group: 'left',
-        },
+        // {
+        //   label: 'Import API Key',
+        //   icon: 'pi pi-fw pi-lock',
+        //   key: 'key',
+        //   group: 'left',
+        // },
         {
           label: 'Video Transcript',
           icon: 'pi pi-fw pi-file',
@@ -57,7 +57,7 @@ const initialState: YoutubeState = {
           group: 'left',
         },
       ],
-      activeTab: 'key',
+      activeTab: 'transcript',
     },
     {
       right: [

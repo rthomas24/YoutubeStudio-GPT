@@ -6,21 +6,27 @@
         [activeItem]="
           (hasKeyUploaded$ | async) === false
             ? tabs[0].left[0]
-            : tabs[0].left[1]
+            : tabs[0].left[0]
         "
       >
       </app-content-tabs>
 
-      <app-api-key *ngIf="tabs[0].activeTab === 'key'"></app-api-key>
+      <app-api-key 
+        *ngIf="tabs[0].activeTab === 'key'">
+      </app-api-key>
 
       <app-transcript
         *ngIf="tabs[0].activeTab === 'transcript'"
       ></app-transcript>
+
     </div>
 
     <div class="tabsContainer">
-      <app-content-tabs [items]="tabs[1].right" [activeItem]="tabs[1].right[0]">
+      <app-content-tabs 
+        [items]="tabs[1].right" 
+        [activeItem]="tabs[1].right[0]">
       </app-content-tabs>
+
       <div
         class="descAndChatContainer"
         [ngStyle]="{ padding: tabs[1].activeTab === 'chat' ? '0' : '1rem' }"
@@ -29,10 +35,12 @@
           *ngIf="tabs[1].activeTab === 'description'"
           class="descriptionGenerator"
         ></app-description-generator>
+
         <app-chat-bot
           *ngIf="tabs[1].activeTab === 'chat'"
           class="bot"
         ></app-chat-bot>
+
       </div>
     </div>
   </ng-container>
