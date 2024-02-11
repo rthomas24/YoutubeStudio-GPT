@@ -55,6 +55,6 @@ The Youtube Studio GPT is designed to cater to a wide range of users, including:
 
 By integrating AI-powered tools, the application offers a unique approach to content creation and interaction, making it an invaluable resource for anyone looking to improve their video's visibility or seeking creative inspiration.
 
-For further assistance or to report issues, please visit our [GitHub Issues](https://github.com/your/repository/issues) page or contact support.
+For further assistance or to report issues, please visit our [GitHub Issues](https://github.com/rthomas24/YoutubeStudio-GPT/issues) page or contact support.
 
 Thank you for choosing Youtube Studio GPT. Happy content creating!
