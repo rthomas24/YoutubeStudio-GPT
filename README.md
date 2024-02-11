@@ -13,6 +13,21 @@ Before diving in, ensure you have the following installed on your system:
 - Git
 - Node.js (version 14 or later)
 - npm (which usually comes with Node.js)
+
+### API Keys Configuration
+
+To use the AI functionalities, you need to configure your API keys:
+1. Open the `.env.sample` file.
+2. Add your OpenAI API key under `OPENAI_KEY`.
+3. If you plan to use Gemini for the chatbot, add your Google Gemini API key under `GEMINI_API_KEY`. If you prefer to use OpenAI for all functionalities, you can ignore the Gemini API key.
+4. After adding your keys, rename the file from `.env.sample` to `.env`.
+
+### Switching AI Models
+
+To switch between AI models for the chatbot:
+- Navigate to the `chatwithytvideo` API function in `server.js`.
+- To use OpenAI, uncomment the OpenAI model line and comment out the Gemini model line.
+
 ### Installation and Setup
 
 To get the application up and running, follow these steps:
