@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { Observable, filter, take } from 'rxjs'
+import { Observable, Subscription, filter, take } from 'rxjs'
 import {
   getAIKeyTerms,
   getAIYoutubeDescription,
@@ -16,6 +16,7 @@ import {
 import {
   ChatCompletionResponse,
   YoutubeInfo,
+  YoutubeService,
 } from 'src/app/services/youtube.service'
 import { ConfirmationService } from 'primeng/api'
 
@@ -55,10 +56,14 @@ export class DescriptionGeneratorComponent implements OnInit {
   public selectedCategory: Categories | undefined
 
   public visible: string = ''
+  public fullResponse: string = ''
+  private streamSubscription!: Subscription
+  private sseSubscription!: Subscription
 
   constructor(
     private store: Store,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private youtube: YoutubeService
   ) {
     this.aiGenereatedDescriptions$ = this.store.select(
       selectGeneratedDescriptions
@@ -114,6 +119,50 @@ export class DescriptionGeneratorComponent implements OnInit {
       { name: 'Gardening', code: 'GARD' },
     ]
   }
+
+  initiateChat(): void {
+    const descriptionOptions = {
+      tones: this.tones,
+      wordCount: this.wordCount,
+      category: this.selectedCategory ? this.selectedCategory.name : '',
+      keyWords: this.keywords,
+      instructions: this.instructions,
+      fullTranscript: this.value === 'full',
+    } as GenerateDescription
+
+    this.youtubeInfo$
+      .pipe(
+        take(1),
+        filter(ytInfo => !!ytInfo.transcript)
+      )
+      .subscribe(ytInfo => {
+        this.currentView = 'viewDesc'
+        this.youtube
+          .initializeChat(descriptionOptions, ytInfo.transcript)
+          .subscribe({
+            next: (response: any) => {
+              const token = response.token
+              this.listenForUpdates(token)
+            },
+            error: error => console.error('Error initiating chat:', error),
+          })
+      })
+  }
+
+  listenForUpdates(token: string): void {
+    this.youtube.getServerSentEvent(token).subscribe({
+      next: (data: string) => {
+        if (data && data !== 'undefined') {
+          this.fullResponse += JSON.parse(data)
+        }
+      },
+      complete: () => {
+        console.log('finished')
+      },
+      error: error => console.error('Error receiving updates:', error),
+    })
+  }
+
 
   generateDescription(): void {
     const description = {

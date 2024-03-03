@@ -1,4 +1,5 @@
 <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
+  <button (click)="subscribeToApiStream()">CLICK ME</button>
   <p-header class="header" *ngIf="!youtubeInfo.title">
     <h2 class="p-text-center">
       Please enter a Youtube URL to get a Transcript
@@ -11,5 +12,6 @@
 
   <div class="transcript">
     <p>{{ youtubeInfo.transcript }}</p>
+    <p>{{ fullResponse }}</p>
   </div>
 </div>
