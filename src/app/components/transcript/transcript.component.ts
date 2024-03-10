@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable, Subscription, filter, take } from 'rxjs'
-import { selectYoutubeInfo } from 'src/app/events/youtube.selectors'
+import { selectYoutubeInfo, selectYoutubeTimestamps } from 'src/app/events/youtube.selectors'
 import { YoutubeInfo, YoutubeService } from 'src/app/services/youtube.service'
 
 @Component({
@@ -11,6 +11,7 @@ import { YoutubeInfo, YoutubeService } from 'src/app/services/youtube.service'
 })
 export class TranscriptComponent {
   public youtubeInfo$: Observable<YoutubeInfo>
+  public youtubeTranscript$: Observable<any>
   public fullResponse: string = ''
   private streamSubscription!: Subscription
   private sseSubscription!: Subscription
@@ -20,6 +21,7 @@ export class TranscriptComponent {
     private youtube: YoutubeService
   ) {
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
+    this.youtubeTranscript$ = this.store.select(selectYoutubeTimestamps)
   }
 
   subscribeToApiStream(): void {

@@ -44,7 +44,7 @@ app.post('/getyoutubetranscript', async (req, res) => {
       res.status(403).send('Not a youtube url link')
     }
 
-    const loader = YoutubeLoader.createFromUrl(youtubeUrl, {
+    const loader = YoutubeLoader.createFromUrl('https://www.youtube.com/watch?v=cvWPlQLH-bg&ab_channel=PiersMorganUncensored', {
       language: 'en',
       addVideoInfo: true,
     })
@@ -76,82 +76,6 @@ app.post('/gettimestamptranscript', async (req, res) => {
   }
 })
 
-// app.post('/getcustomdescription', async (req, res) => {
-//   const transcript = req.body.transcript ?? ''
-//   const descriptionOptions = req.body.descriptionOptions ?? {}
-//   const modelName = 'gpt-3.5-turbo-0125'
-
-//   try {
-//     const openaiModel = new OpenAI({ apiKey: openAIApiKey })
-//     const langChainModel = new ChatOpenAI({
-//       openAIApiKey,
-//       modelName,
-//       temperature: 0,
-//     })
-
-//     const textSplitter = new RecursiveCharacterTextSplitter({
-//       chunkSize: 1000,
-//     })
-//     const docs = await textSplitter.createDocuments([transcript])
-
-//     const chain = loadSummarizationChain(langChainModel, {
-//       type: 'stuff',
-//     })
-
-//     let transcriptSummary
-//     if (!descriptionOptions.fullTranscript) {
-//       transcriptSummary = await chain.call({
-//         input_documents: docs,
-//       })
-//     }
-
-//     const completion = await openaiModel.chat.completions.create({
-//       messages: [
-//         {
-//           role: 'system',
-//           content: ` You are specialized in crafting YouTube video descriptions.
-//                       Your task is to create a compelling and informative description for a YouTube video, guided by the details the user specifies.
-
-//                       Ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count.
-//                       This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.
-//                 `,
-//         },
-//         {
-//           role: 'user',
-//           stream: true,
-//           content: `Create a YouTube video description, the category of the video is ${
-//             descriptionOptions.category
-//           }.
-//                 You should use the following keywords in the generated description natrually: ${descriptionOptions.keyWords.join(
-//                   ', and '
-//                 )}.
-//                 The desired Word Count is approximately ${
-//                   descriptionOptions.wordCount
-//                 } words. Your tone of voice for the description should be
-//                 ${descriptionOptions.tones.join(
-//                   ', and '
-//                 )}. This is the custom instructions on what to add to the description: ${
-//                   descriptionOptions.instructions
-//                 }.
-//                   And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill
-//                   out the description: ${
-//                     descriptionOptions.fullTranscript
-//                       ? transcript
-//                       : transcriptSummary.text
-//                   }`
-
-//         },
-//       ],
-//       model: modelName,
-//       temperature: 0.7,
-//     })
-
-//     res.status(200).send({ summary: completion })
-//   } catch (error) {
-//     console.error('Error:', error)
-//     res.status(500).send('An error occurred')
-//   }
-// })
 
 app.post('/chatwithytvideo', async (req, res) => {
   const transcript = req.body.transcript ?? ''
@@ -378,12 +302,6 @@ app.post('/custominstructions', async (req, res) => {
   }
 })
 
-// app.use((req, res, next) => {
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Content-Type', 'text/event-stream');
-//   res.setHeader('Connection', 'keep-alive');
-//   next();
-// });
 
 app.get('/getTranscriptSummary', async (req, res) => {
   const transcript = req.body.transcript ?? ''
@@ -419,86 +337,6 @@ app.get('/getTranscriptSummary', async (req, res) => {
   }
 })
 
-// app.post('/testApi', async (req, res) => {
-//   const modelName = 'gpt-3.5-turbo-0125'
-//   const transcript =
-//     req.body.transcript ?? 'This transcript is suppose to be a test'
-//   const descriptionOptions = req.body.descriptionOptions ?? {
-//     category: 'Tech',
-//     wordCount: 150,
-//     tones: ['Casual'],
-//     instructions: 'Create a insightful description based on the transcript',
-//     keyWords: ['AI'],
-//   }
-//   const openaiModel = new OpenAI({ apiKey: openAIApiKey })
-//   let stream = null
-
-//   openaiModel.chat.completions
-//     .create({
-//       messages: [
-//         {
-//           role: 'system',
-//           content: ` You are specialized in crafting YouTube video descriptions. 
-//                     Your task is to create a compelling and informative description for a YouTube video, guided by the details the user specifies.
-                
-//                     Ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count. 
-//                     This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.            
-//               `,
-//         },
-//         {
-//           role: 'user',
-//           content: `Create a YouTube video description, the category of the video is ${
-//             descriptionOptions.category
-//           }. 
-//               You should use the following keywords in the generated description natrually: ${descriptionOptions.keyWords.join(
-//                 ', and '
-//               )}.
-//               The desired Word Count is approximately ${
-//                 descriptionOptions.wordCount
-//               } words. Your tone of voice for the description should be
-//               ${descriptionOptions.tones.join(
-//                 ', and '
-//               )}. This is the custom instructions on what to add to the description: ${
-//                 descriptionOptions.instructions
-//               }. 
-//                 And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill 
-//                 out the description: ${transcript}`,
-//         },
-//       ],
-//       stream: true,
-//       model: modelName,
-//       temperature: 0.7,
-//     })
-//     .then(responseStream => {
-//       stream = responseStream
-//       ;(async () => {
-//         for await (const chunk of responseStream) {
-//           res.write(
-//             `data: ${JSON.stringify(chunk.choices[0].delta.content)}\n\n`
-//           )
-//           if (chunk.data && chunk.data.startsWith('[DONE]')) {
-//             res.end()
-//             break
-//           }
-//         }
-//       })().catch(err => {
-//         console.error(err)
-//         res.end()
-//       })
-//     })
-//     .catch(err => {
-//       console.error(err)
-//       res.end()
-//     })
-
-//   req.on('close', () => {
-//     if (stream) {
-//       stream.controller.abort()
-//     }
-//     res.end()
-//   })
-// })
-
 const parametersStore = {}
 
 app.post('/api/initiateChat', (req, res) => {
@@ -508,7 +346,7 @@ app.post('/api/initiateChat', (req, res) => {
   res.json({ token })
 })
 
-app.get('/testApi', async (req, res) => {
+app.get('/getCustomDescription', async (req, res) => {
   const token = req.query.token
   const parameters = parametersStore[token]
   if (!parameters) {
@@ -576,108 +414,3 @@ app.get('/testApi', async (req, res) => {
     res.end()
   })
 })
-
-// app.get('/testApi', async (req, res) => {
-//   const token = req.query.token ;
-//   const parameters = parametersStore[token];
-//   if (!parameters) {
-//     res.status(404).send('Session not found');
-//     return;
-//   }
-
-//   console.log(parameters)
-
-//   // Example streaming response logic
-//   res.setHeader('Content-Type', 'text/event-stream');
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Connection', 'keep-alive');
-
-//   // Example of sending data periodically
-//   const intervalId = setInterval(() => {
-//     res.write(`data: ${JSON.stringify({ message: parameters })}\n\n`);
-//   }, 1000);
-
-//   req.on('close', () => {
-//     clearInterval(intervalId);
-//     delete parametersStore[token]; // Clean up parameters after the connection is closed
-//     res.end();
-//   });
-// });
-
-// app.get('/getcustomdescription', async (req, res) => {
-//   const transcript = req.body.transcript ?? "This transcript is suppose to be a test"
-//   const descriptionOptions = req.body.descriptionOptions ?? {
-//     category: 'Tech',
-//     wordCount: 150,
-//     tones: ['Casual'],
-//     instructions: "Create a insightful description based on the transcript",
-//     keyWords: ["AI"]
-//   }
-//   const modelName = 'gpt-3.5-turbo-0125';
-//   const openaiModel = new OpenAI({ apiKey: openAIApiKey })
-//   let stream = null;
-
-//   openaiModel.chat.completions.create({
-//     messages: [
-//       {
-//         role: 'system',
-//         content: ` You are specialized in crafting YouTube video descriptions.
-//                     Your task is to create a compelling and informative description for a YouTube video, guided by the details the user specifies.
-
-//                     Ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count.
-//                     This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.
-//               `,
-//       },
-//       {
-//         role: 'user',
-//         stream: true,
-//         content: `Create a YouTube video description, the category of the video is ${
-//           descriptionOptions.category
-//         }.
-//               You should use the following keywords in the generated description natrually: ${descriptionOptions.keyWords.join(
-//                 ', and '
-//               )}.
-//               The desired Word Count is approximately ${
-//                 descriptionOptions.wordCount
-//               } words. Your tone of voice for the description should be
-//               ${descriptionOptions.tones.join(
-//                 ', and '
-//               )}. This is the custom instructions on what to add to the description: ${
-//                 descriptionOptions.instructions
-//               }.
-//                 And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill
-//                 out the description: ${
-//                   transcript
-//                 }`
-
-//       },
-//     ],
-//     stream: true,
-//     model: modelName,
-//     temperature: 0.7,
-//   }).then((responseStream) => {
-//     stream = responseStream;
-//     (async () => {
-//       for await (const chunk of responseStream) {
-//         res.write(`data: ${JSON.stringify(chunk.choices[0].delta.content)}\n\n`);
-//         if (chunk.data && chunk.data.startsWith('[DONE]')) {
-//           res.end();
-//           break;
-//         }
-//       }
-//     })().catch(err => {
-//       console.error(err);
-//       res.end();
-//     });
-//   }).catch(err => {
-//     console.error(err);
-//     res.end();
-//   });
-
-//   req.on('close', () => {
-//     if (stream) {
-//       stream.controller.abort();
-//     }
-//     res.end();
-//   });
-// });

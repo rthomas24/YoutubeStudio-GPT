@@ -12,6 +12,7 @@ import {
   selectInstructions,
   selectKeyWords,
   selectYoutubeInfo,
+  selectYoutubeTimestamps,
 } from 'src/app/events/youtube.selectors'
 import {
   ChatCompletionResponse,
@@ -39,6 +40,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   public keywords: string[] = []
   public instructions: string = ''
   public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
+  public youtubeTranscript$: Observable<any>
   public youtubeInfo$: Observable<YoutubeInfo>
   public generatingStatus$: Observable<boolean>
   public generateKeyWords$: Observable<string[]>
@@ -75,6 +77,9 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.generateKeyWords$ = this.store.select(selectKeyWords)
 
     this.generateInstructions$ = this.store.select(selectInstructions)
+
+    this.youtubeTranscript$ = this.store.select(selectYoutubeTimestamps)
+
   }
 
   ngOnInit(): void {
@@ -130,15 +135,15 @@ export class DescriptionGeneratorComponent implements OnInit {
       fullTranscript: this.value === 'full',
     } as GenerateDescription
 
-    this.youtubeInfo$
+    this.youtubeTranscript$
       .pipe(
         take(1),
-        filter(ytInfo => !!ytInfo.transcript)
+        filter(ytInfo => !!ytInfo.length)
       )
       .subscribe(ytInfo => {
         this.currentView = 'viewDesc'
         this.youtube
-          .initializeChat(descriptionOptions, ytInfo.transcript)
+          .initializeChat(descriptionOptions, ytInfo.map((a: any) => a.text))
           .subscribe({
             next: (response: any) => {
               const token = response.token
@@ -174,16 +179,16 @@ export class DescriptionGeneratorComponent implements OnInit {
       fullTranscript: this.value === 'full',
     } as GenerateDescription
 
-    this.youtubeInfo$
+    this.youtubeTranscript$
       .pipe(
         take(1),
-        filter(ytInfo => !!ytInfo.transcript)
+        filter(ytInfo => !!ytInfo.length)
       )
       .subscribe(ytInfo => {
         this.currentView = 'viewDesc'
         this.store.dispatch(
           getAIYoutubeDescription({
-            transcript: ytInfo.transcript,
+            transcript: ytInfo.map((a: any) => a.text ),
             generateDescription: description,
           })
         )
@@ -191,13 +196,13 @@ export class DescriptionGeneratorComponent implements OnInit {
   }
 
   generateKeyWords() {
-    this.youtubeInfo$
+    this.youtubeTranscript$
       .pipe(
         take(1),
-        filter(ytInfo => !!ytInfo.transcript)
+        filter(ytInfo => !!ytInfo.length)
       )
       .subscribe(ytInfo => {
-        this.store.dispatch(getAIKeyTerms({ transcript: ytInfo.transcript }))
+        this.store.dispatch(getAIKeyTerms({ transcript: ytInfo.map((a: any) => a.text ) }))
       })
   }
 

@@ -158,74 +158,9 @@ export class YoutubeService {
     return formattedSentences.join('').slice(0, -1)
   }
 
-  // public testApi(): Observable<any> {
-  //   return new Observable(observer => {
-  //     const modelName = 'gpt-3.5-turbo-0125';
-  //     const openaiModel = new OpenAI({ apiKey:, dangerouslyAllowBrowser: true });
-  //     let stream: Stream<any> | null = null; // Define stream here to broaden its scope
-
-  //     openaiModel.chat.completions.create({
-  //       messages: [
-  //         {
-  //           role: 'system',
-  //           content: `You are specialized in crafting YouTube video descriptions.`
-  //         },
-  //         {
-  //           role: 'user',
-  //           content: `Create a YouTube video description`
-  //         },
-  //       ],
-  //       stream: true,
-  //       model: modelName,
-  //       temperature: 0.7,
-  //     }).then((responseStream: Stream<any>) => {
-  //       stream = responseStream; // Assign the stream here
-  //       (async () => {
-  //         for await (const chunk of responseStream) {
-  //           observer.next(chunk);
-  //           if (chunk.data && chunk.data.startsWith('[DONE]')) {
-  //             observer.complete();
-  //             break;
-  //           }
-  //         }
-  //       })().catch(err => observer.error(err));
-  //     }).catch(err => observer.error(err));
-
-  //     // Cleanup if the consumer unsubscribes
-  //     return () => {
-  //       if (stream) {
-  //         stream.controller.abort();
-  //       }
-  //     };
-  //   });
-  // }
-
   getEventSource(url: string): EventSource {
     return new EventSource(url)
   }
-
-  // getServerSentEvent(url: string): Observable<any> {
-  //   return new Observable(observer => {
-  //     const eventSource = this.getEventSource(url);
-
-  //     eventSource.onmessage = event => {
-  //       this._zone.run(() => {
-  //         observer.next(event.data);
-  //       });
-  //     };
-
-  //     eventSource.onerror = error => {
-  //       this._zone.run(() => {
-  //         observer.error(error); // Close the connection on error
-  //         eventSource.close();
-  //       });
-  //     };
-
-  //     return () => {
-  //       eventSource.close();
-  //     };
-  //   });
-  // }
 
   getServerSentEvent(token: string): Observable<any> {
     return new Observable(observer => {
