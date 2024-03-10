@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { Observable, Subscription, filter, take } from 'rxjs'
-import { selectYoutubeInfo, selectYoutubeTimestamps } from 'src/app/events/youtube.selectors'
+import { Observable, Subscription } from 'rxjs'
+import {
+  selectYoutubeInfo,
+  selectYoutubeTimestamps,
+} from 'src/app/events/youtube.selectors'
 import { YoutubeInfo, YoutubeService } from 'src/app/services/youtube.service'
 
 @Component({

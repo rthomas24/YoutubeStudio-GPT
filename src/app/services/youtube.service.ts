@@ -165,7 +165,7 @@ export class YoutubeService {
   getServerSentEvent(token: string): Observable<any> {
     return new Observable(observer => {
       const eventSource = new EventSource(
-        `http://localhost:3000/testApi?token=${token}`
+        `http://localhost:3000/getCustomDescription?token=${token}`
       )
 
       eventSource.onmessage = event => {

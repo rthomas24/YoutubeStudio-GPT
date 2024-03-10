@@ -44,10 +44,13 @@ app.post('/getyoutubetranscript', async (req, res) => {
       res.status(403).send('Not a youtube url link')
     }
 
-    const loader = YoutubeLoader.createFromUrl('https://www.youtube.com/watch?v=cvWPlQLH-bg&ab_channel=PiersMorganUncensored', {
-      language: 'en',
-      addVideoInfo: true,
-    })
+    const loader = YoutubeLoader.createFromUrl(
+      'https://www.youtube.com/watch?v=cvWPlQLH-bg&ab_channel=PiersMorganUncensored',
+      {
+        language: 'en',
+        addVideoInfo: true,
+      }
+    )
 
     const docs = await loader.load()
 
@@ -75,7 +78,6 @@ app.post('/gettimestamptranscript', async (req, res) => {
     res.status(500).send('An error occurred')
   }
 })
-
 
 app.post('/chatwithytvideo', async (req, res) => {
   const transcript = req.body.transcript ?? ''
@@ -302,7 +304,6 @@ app.post('/custominstructions', async (req, res) => {
   }
 })
 
-
 app.get('/getTranscriptSummary', async (req, res) => {
   const transcript = req.body.transcript ?? ''
   const modelName = 'gpt-3.5-turbo-0125'
@@ -349,19 +350,30 @@ app.post('/api/initiateChat', (req, res) => {
 app.get('/getCustomDescription', async (req, res) => {
   const token = req.query.token
   const parameters = parametersStore[token]
+  // console.log(JSON.stringify(parameters))
   if (!parameters) {
     res.status(404).send('Session not found')
     return
   }
 
   const openaiModel = new OpenAI({ apiKey: openAIApiKey })
+  let result
 
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
 
   try {
-    const stream = await openaiModel.chat.completions.create({
+    console.log('transcript ' + JSON.stringify(parameters.transcript.join('')))
+
+    let transcriptSummary
+    if (!parameters.fullTranscript) {
+      transcriptSummary = await summarizeTranscript(parameters.transcript)
+    }
+
+    console.log('transcriptSummary ' + JSON.stringify(transcriptSummary))
+
+    result = await openaiModel.chat.completions.create({
       model: 'gpt-3.5-turbo-0125',
       messages: [
         {
@@ -371,9 +383,7 @@ app.get('/getCustomDescription', async (req, res) => {
         {
           role: 'user',
           content: `Create a YouTube video description, 
-            the category of the video is ${
-              parameters.category
-            }. 
+            the category of the video is ${parameters.category}. 
             You should use the following keywords in the generated description naturally: ${parameters.keyWords.join(
               ', and '
             )}. 
@@ -386,7 +396,9 @@ app.get('/getCustomDescription', async (req, res) => {
             This is the custom instructions on what to add to the description: ${
               parameters.instructions
             }. And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill out the description: ${
-              parameters.transcript
+              parameters.fullTranscript
+                ? transcript.join('')
+                : transcriptSummary.text
             }`,
         },
       ],
@@ -394,7 +406,7 @@ app.get('/getCustomDescription', async (req, res) => {
       temperature: 0.7,
     })
 
-    for await (const chunk of stream) {
+    for await (const chunk of result) {
       res.write(`data: ${JSON.stringify(chunk.choices[0].delta.content)}\n\n`)
       if (chunk.data && chunk.data.startsWith('[DONE]')) {
         res.end()
@@ -407,10 +419,33 @@ app.get('/getCustomDescription', async (req, res) => {
   }
 
   req.on('close', () => {
-    if (stream) {
-      stream.controller.abort()
+    if (result && result.controller) {
+      result.controller.abort()
     }
     delete parametersStore[token]
     res.end()
   })
 })
+
+async function summarizeTranscript(transcript) {
+  const modelName = 'gpt-3.5-turbo-0125'
+
+  const langChainModel = new ChatOpenAI({
+    openAIApiKey,
+    modelName,
+    temperature: 0,
+  })
+
+  const textSplitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+  })
+  const docs = await textSplitter.createDocuments(transcript)
+
+  const chain = loadSummarizationChain(langChainModel, {
+    type: 'stuff',
+  })
+
+  return await chain.invoke({
+    input_documents: docs,
+  })
+}

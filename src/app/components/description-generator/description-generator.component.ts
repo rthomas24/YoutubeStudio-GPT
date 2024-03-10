@@ -79,7 +79,6 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.generateInstructions$ = this.store.select(selectInstructions)
 
     this.youtubeTranscript$ = this.store.select(selectYoutubeTimestamps)
-
   }
 
   ngOnInit(): void {
@@ -143,7 +142,10 @@ export class DescriptionGeneratorComponent implements OnInit {
       .subscribe(ytInfo => {
         this.currentView = 'viewDesc'
         this.youtube
-          .initializeChat(descriptionOptions, ytInfo.map((a: any) => a.text))
+          .initializeChat(
+            descriptionOptions,
+            ytInfo.map((a: any) => a.text)
+          )
           .subscribe({
             next: (response: any) => {
               const token = response.token
@@ -168,7 +170,6 @@ export class DescriptionGeneratorComponent implements OnInit {
     })
   }
 
-
   generateDescription(): void {
     const description = {
       tones: this.tones,
@@ -188,7 +189,7 @@ export class DescriptionGeneratorComponent implements OnInit {
         this.currentView = 'viewDesc'
         this.store.dispatch(
           getAIYoutubeDescription({
-            transcript: ytInfo.map((a: any) => a.text ),
+            transcript: ytInfo.map((a: any) => a.text),
             generateDescription: description,
           })
         )
@@ -202,7 +203,9 @@ export class DescriptionGeneratorComponent implements OnInit {
         filter(ytInfo => !!ytInfo.length)
       )
       .subscribe(ytInfo => {
-        this.store.dispatch(getAIKeyTerms({ transcript: ytInfo.map((a: any) => a.text ) }))
+        this.store.dispatch(
+          getAIKeyTerms({ transcript: ytInfo.map((a: any) => a.text) })
+        )
       })
   }
 
