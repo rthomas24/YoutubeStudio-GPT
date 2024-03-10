@@ -1,15 +1,19 @@
-import { Injectable } from '@angular/core'
+import { Injectable, NgZone } from '@angular/core'
 import { environment } from '../../environments/environment'
 import { Observable, map } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { GenerateDescription } from '../components/description-generator/description-generator.component'
 import { ChatHistory } from '../events/youtube.reducer'
-
+import OpenAI from 'openai'
+import { Stream } from 'openai/streaming'
 @Injectable({
   providedIn: 'root',
 })
 export class YoutubeService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private _zone: NgZone
+  ) {}
 
   public getYoutubeUrl(youtubeUrl: string): Observable<YoutubeInfo> {
     const headers = { 'x-api-key': environment.functionApiKey }
@@ -151,9 +155,47 @@ export class YoutubeService {
       return sentence
     })
 
-    // Join the sentences back together, now each sentence ends with a newline
-    // The slice(0, -1) removes the last added newline character after the final sentence
     return formattedSentences.join('').slice(0, -1)
+  }
+
+  getEventSource(url: string): EventSource {
+    return new EventSource(url)
+  }
+
+  getServerSentEvent(token: string): Observable<any> {
+    return new Observable(observer => {
+      const eventSource = new EventSource(
+        `http://localhost:3000/testApi?token=${token}`
+      )
+
+      eventSource.onmessage = event => {
+        this._zone.run(() => {
+          observer.next(event.data)
+        })
+      }
+
+      eventSource.onerror = error => {
+        this._zone.run(() => {
+          observer.error(error)
+          eventSource.close()
+        })
+      }
+
+      return () => {
+        eventSource.close()
+      }
+    })
+  }
+
+  initializeChat(params: any, transcript: string): Observable<string> {
+    const parameters = {
+      ...params,
+      transcript,
+    }
+    return this.http.post<string>(
+      'http://localhost:3000/api/initiateChat',
+      parameters
+    )
   }
 }
 

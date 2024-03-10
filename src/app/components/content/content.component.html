@@ -11,20 +11,15 @@
       >
       </app-content-tabs>
 
-      <app-api-key 
-        *ngIf="tabs[0].activeTab === 'key'">
-      </app-api-key>
+      <app-api-key *ngIf="tabs[0].activeTab === 'key'"> </app-api-key>
 
       <app-transcript
         *ngIf="tabs[0].activeTab === 'transcript'"
       ></app-transcript>
-
     </div>
 
     <div class="tabsContainer">
-      <app-content-tabs 
-        [items]="tabs[1].right" 
-        [activeItem]="tabs[1].right[0]">
+      <app-content-tabs [items]="tabs[1].right" [activeItem]="tabs[1].right[0]">
       </app-content-tabs>
 
       <div
@@ -40,7 +35,6 @@
           *ngIf="tabs[1].activeTab === 'chat'"
           class="bot"
         ></app-chat-bot>
-
       </div>
     </div>
   </ng-container>

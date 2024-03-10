@@ -143,7 +143,7 @@
 
     <div class="genButtonContainer">
       <p-button
-        (click)="generateDescription()"
+        (click)="initiateChat()"
         class="genBtn"
         icon="pi pi-bolt"
         label="Generate"
@@ -159,7 +159,7 @@
         Generate More Descriptions
       </div>
     </div>
-    <div
+    <!-- <div
       *ngIf="currentlyGenerating"
       class="spinnerContainer"
       style="text-align: center; margin: auto"
@@ -168,10 +168,10 @@
         <h4 class="p-text-center">GENERATING NEW DESCRIPTION</h4>
       </p-header>
       <p-progressSpinner></p-progressSpinner>
-    </div>
+    </div> -->
     <ng-container *ngIf="!currentlyGenerating">
       <p>
-        {{ descriptions[first].summary.choices[0].message.content }}
+        {{ fullResponse }}
       </p>
       <p-paginator
         [first]="first"
@@ -182,6 +182,5 @@
         [showPageLinks]="false"
       ></p-paginator>
     </ng-container>
-   
   </ng-container>
 </ng-template>

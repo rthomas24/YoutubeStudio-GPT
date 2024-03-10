@@ -1,4 +1,20 @@
-<div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
+<div *ngIf="youtubeTranscript$ | async as youtubeInfo" class="transcriptContainer">
+  <p-header class="header" *ngIf="!youtubeInfo.length">
+    <h2 class="p-text-center">
+      Please enter a Youtube URL to get a Transcript
+    </h2>
+  </p-header>
+
+  <!-- <p-header>
+    <h2 class="p-text-center">{{ youtubeInfo.title }}</h2>
+  </p-header> -->
+
+  <div class="transcript" >
+    <p *ngFor="let transcript of youtubeInfo"> {{ transcript.text }}</p>
+    <!-- <p>{{ fullResponse }}</p> -->
+  </div>
+</div>
+<!-- <div *ngIf="youtubeInfo$ | async as youtubeInfo" class="transcriptContainer">
   <p-header class="header" *ngIf="!youtubeInfo.title">
     <h2 class="p-text-center">
       Please enter a Youtube URL to get a Transcript
@@ -11,5 +27,6 @@
 
   <div class="transcript">
     <p>{{ youtubeInfo.transcript }}</p>
+    <p>{{ fullResponse }}</p>
   </div>
-</div>
+</div> -->

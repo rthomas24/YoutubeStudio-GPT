@@ -21,15 +21,15 @@ export const getYoutubeInfoError = createAction(
 )
 
 export const getYoutubeTimestamps = createAction(
-  '[Youtube] Get Youtube Info',
+  '[Youtube] Get Youtube Transcript Info',
   props<{ youtubeUrl: string }>()
 )
 export const getYoutubeTimestampsSuccess = createAction(
-  '[Youtube] Get Youtube Info Success',
+  '[Youtube] Get Youtube Transcript Info Success',
   props<{ timestamps: YoutubeTimestamps[] }>()
 )
 export const getYoutubeTimestampsError = createAction(
-  '[Youtube] Get Youtube Info Error',
+  '[Youtube] Get Youtube Transcript Info Error',
   props<{ error: Error }>()
 )
 
