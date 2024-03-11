@@ -43,17 +43,9 @@ export const uploadedKey = createAction(
   props<{ key: boolean }>()
 )
 
-export const getAIYoutubeDescription = createAction(
-  '[Youtube] Get Youtube AI Description',
-  props<{ transcript: string; generateDescription: GenerateDescription }>()
-)
-export const getAIYoutubeDescriptionSuccess = createAction(
-  '[Youtube] Get Youtube AI Description Success',
-  props<{ description: ChatCompletionResponse }>()
-)
-export const getAIYoutubeDescriptionError = createAction(
-  '[Youtube] Get Youtube AI Description Error',
-  props<{ error: Error }>()
+export const addAIYoutubeDescription = createAction(
+  '[Youtube] Add Youtube AI Description',
+  props<{ description: string }>()
 )
 
 export const sendNewChatMessage = createAction(

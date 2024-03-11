@@ -2,10 +2,8 @@ import { Injectable, NgZone } from '@angular/core'
 import { environment } from '../../environments/environment'
 import { Observable, map } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
-import { GenerateDescription } from '../components/description-generator/description-generator.component'
 import { ChatHistory } from '../events/youtube.reducer'
-import OpenAI from 'openai'
-import { Stream } from 'openai/streaming'
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,48 +31,6 @@ export class YoutubeService {
             viewCount: parsedData.docs[0].metadata.view_count,
             author: parsedData.docs[0].metadata.author,
           } as YoutubeInfo
-        })
-      )
-  }
-
-  public getYoutubeDescription(
-    transcript: string,
-    descriptionOptions: GenerateDescription
-  ): Observable<ChatCompletionResponse> {
-    const headers = { 'x-api-key': environment.functionApiKey }
-    const url = 'http://localhost:3000/getcustomdescription'
-    return this.http
-      .post(
-        url,
-        { transcript, descriptionOptions },
-        { headers, responseType: 'text' }
-      )
-      .pipe(
-        map((data: any) => {
-          const parsedData = JSON.parse(data)
-          return {
-            summary: {
-              id: parsedData.summary.id,
-              object: parsedData.summary.object,
-              created: parsedData.summary.created,
-              model: parsedData.summary.model,
-              choices: parsedData.summary.choices.map((choice: any) => {
-                return {
-                  index: choice.index,
-                  message: {
-                    role: choice.message.role,
-                    content: choice.message.content,
-                  },
-                  finish_reason: choice.finish_reason,
-                }
-              }),
-              usage: {
-                prompt_tokens: parsedData.summary.usage.prompt_tokens,
-                completion_tokens: parsedData.summary.usage.completion_tokens,
-                total_tokens: parsedData.summary.usage.total_tokens,
-              },
-            },
-          } as ChatCompletionResponse
         })
       )
   }
@@ -187,13 +143,13 @@ export class YoutubeService {
     })
   }
 
-  initializeChat(params: any, transcript: string): Observable<string> {
+  getYTDescription(params: any, transcript: string): Observable<string> {
     const parameters = {
       ...params,
       transcript,
     }
     return this.http.post<string>(
-      'http://localhost:3000/api/initiateChat',
+      'http://localhost:3000/api/getYTDescription',
       parameters
     )
   }

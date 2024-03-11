@@ -159,8 +159,8 @@
         Generate More Descriptions
       </div>
     </div>
-    <!-- <div
-      *ngIf="currentlyGenerating"
+    <div
+      *ngIf="currentlyGenerating && !fullResponse.length"
       class="spinnerContainer"
       style="text-align: center; margin: auto"
     >
@@ -168,12 +168,16 @@
         <h4 class="p-text-center">GENERATING NEW DESCRIPTION</h4>
       </p-header>
       <p-progressSpinner></p-progressSpinner>
-    </div> -->
-    <ng-container *ngIf="!currentlyGenerating">
-      <p>
+    </div>
+    <ng-container>
+      <p *ngIf="!currentlyGenerating && !fullResponse.length">
+        {{ descriptions[first] }}
+      </p>
+      <p *ngIf="fullResponse.length">
         {{ fullResponse }}
       </p>
       <p-paginator
+        *ngIf="!currentlyGenerating"
         [first]="first"
         [rows]="1"
         [totalRecords]="descriptions.length"

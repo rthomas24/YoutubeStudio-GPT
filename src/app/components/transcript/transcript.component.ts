@@ -40,7 +40,6 @@ export class TranscriptComponent {
   }
 
   ngOnDestroy(): void {
-    // Clean up the subscription to prevent memory leaks
     if (this.streamSubscription) {
       this.streamSubscription.unsubscribe()
     }

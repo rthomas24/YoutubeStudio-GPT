@@ -1,14 +1,12 @@
 import { createReducer, on } from '@ngrx/store'
 import {
-  ChatCompletionResponse,
   YoutubeInfo,
   YoutubeTimestamps,
 } from '../services/youtube.service'
 import {
+  addAIYoutubeDescription,
   changeTabs,
   getAIKeyTermsSuccess,
-  getAIYoutubeDescription,
-  getAIYoutubeDescriptionSuccess,
   getCustomInstructionsSuccess,
   getYoutubeInfoSuccess,
   getYoutubeTimestampsSuccess,
@@ -24,7 +22,7 @@ export interface YoutubeState {
   timestamps: YoutubeTimestamps[]
   activeTabs: any
   hasUploadedKey: boolean
-  generatedDescriptions: ChatCompletionResponse[]
+  generatedDescriptions: string[]
   currentlyGeneratingDescription: boolean
   currentlyLoadingResponse: boolean
   chatMessages: ChatHistory[]
@@ -106,13 +104,7 @@ export const YoutubeReducer = createReducer(
       hasUploadedKey: key,
     }
   }),
-  on(getAIYoutubeDescription, (state: YoutubeState): YoutubeState => {
-    return {
-      ...state,
-      currentlyGeneratingDescription: true,
-    }
-  }),
-  on(getAIYoutubeDescriptionSuccess, (state: YoutubeState, { description }) => {
+  on(addAIYoutubeDescription, (state: YoutubeState, { description }) => {
     return {
       ...state,
       generatedDescriptions: [...state.generatedDescriptions, description],

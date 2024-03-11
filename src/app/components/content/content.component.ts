@@ -24,7 +24,7 @@ export class ContentComponent implements OnInit {
   public apiKeyValue: string = ''
   public youtubeInfo$: Observable<YoutubeInfo>
   public hasKeyUploaded$: Observable<boolean>
-  public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
+  public aiGenereatedDescriptions$: Observable<string[]>
   public getActiveTabs$: Observable<any>
 
   constructor(

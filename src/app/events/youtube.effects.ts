@@ -2,17 +2,11 @@ import { Injectable } from '@angular/core'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { switchMap, catchError, map } from 'rxjs/operators'
-import {
-  ChatCompletionResponse,
-  YoutubeService,
-} from '../services/youtube.service'
+import { YoutubeService } from '../services/youtube.service'
 import {
   getAIKeyTerms,
   getAIKeyTermsError,
   getAIKeyTermsSuccess,
-  getAIYoutubeDescription,
-  getAIYoutubeDescriptionError,
-  getAIYoutubeDescriptionSuccess,
   getCustomInstructions,
   getCustomInstructionsError,
   getCustomInstructionsSuccess,
@@ -67,22 +61,6 @@ export class YoutubeEffects {
           .pipe(
             map(response => sendNewChatMessageSuccess({ response })),
             catchError(error => of(sendNewChatMessageError({ error })))
-          )
-      )
-    )
-  )
-
-  youtubeAiDescription$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getAIYoutubeDescription),
-      switchMap(({ transcript, generateDescription }) =>
-        this.youtubeService
-          .getYoutubeDescription(transcript, generateDescription)
-          .pipe(
-            map((description: ChatCompletionResponse) =>
-              getAIYoutubeDescriptionSuccess({ description })
-            ),
-            catchError(error => of(getAIYoutubeDescriptionError({ error })))
           )
       )
     )

@@ -2,20 +2,18 @@ import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable, Subscription, filter, take } from 'rxjs'
 import {
+  addAIYoutubeDescription,
   getAIKeyTerms,
-  getAIYoutubeDescription,
   getCustomInstructions,
 } from 'src/app/events/youtube.actions'
 import {
   selectGeneratedDescriptions,
-  selectGeneratingStatus,
   selectInstructions,
   selectKeyWords,
   selectYoutubeInfo,
   selectYoutubeTimestamps,
 } from 'src/app/events/youtube.selectors'
 import {
-  ChatCompletionResponse,
   YoutubeInfo,
   YoutubeService,
 } from 'src/app/services/youtube.service'
@@ -39,10 +37,9 @@ export class DescriptionGeneratorComponent implements OnInit {
   public wordCount: number = 100
   public keywords: string[] = []
   public instructions: string = ''
-  public aiGenereatedDescriptions$: Observable<ChatCompletionResponse[]>
+  public aiGenereatedDescriptions$: Observable<string[]>
   public youtubeTranscript$: Observable<any>
   public youtubeInfo$: Observable<YoutubeInfo>
-  public generatingStatus$: Observable<boolean>
   public generateKeyWords$: Observable<string[]>
   public generateInstructions$: Observable<string>
   public currentlyGenerating = false
@@ -72,8 +69,6 @@ export class DescriptionGeneratorComponent implements OnInit {
     )
     this.youtubeInfo$ = this.store.select(selectYoutubeInfo)
 
-    this.generatingStatus$ = this.store.select(selectGeneratingStatus)
-
     this.generateKeyWords$ = this.store.select(selectKeyWords)
 
     this.generateInstructions$ = this.store.select(selectInstructions)
@@ -82,16 +77,16 @@ export class DescriptionGeneratorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.generatingStatus$.subscribe(status => {
-      this.currentlyGenerating = status
-    })
-
     this.generateKeyWords$.subscribe(keywords => {
       this.keywords = [...this.keywords, ...keywords]
     })
 
     this.generateInstructions$.subscribe(instruct => {
       this.instructions = instruct
+    })
+
+    this.aiGenereatedDescriptions$.subscribe(descriptions => {
+      this.first = descriptions.length - 1
     })
 
     this.categories = [
@@ -125,6 +120,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   }
 
   initiateChat(): void {
+    this.currentlyGenerating = true
     const descriptionOptions = {
       tones: this.tones,
       wordCount: this.wordCount,
@@ -142,7 +138,7 @@ export class DescriptionGeneratorComponent implements OnInit {
       .subscribe(ytInfo => {
         this.currentView = 'viewDesc'
         this.youtube
-          .initializeChat(
+          .getYTDescription(
             descriptionOptions,
             ytInfo.map((a: any) => a.text)
           )
@@ -157,42 +153,28 @@ export class DescriptionGeneratorComponent implements OnInit {
   }
 
   listenForUpdates(token: string): void {
-    this.youtube.getServerSentEvent(token).subscribe({
-      next: (data: string) => {
-        if (data && data !== 'undefined') {
+    this.youtube
+      .getServerSentEvent(token)
+      .pipe(filter(data => data && data !== 'undefined'))
+      .subscribe({
+        next: (data: string) => {
           this.fullResponse += JSON.parse(data)
-        }
-      },
-      complete: () => {
-        console.log('finished')
-      },
-      error: error => console.error('Error receiving updates:', error),
-    })
-  }
-
-  generateDescription(): void {
-    const description = {
-      tones: this.tones,
-      wordCount: this.wordCount,
-      category: this.selectedCategory ? this.selectedCategory.name : '',
-      keyWords: this.keywords,
-      instructions: this.instructions,
-      fullTranscript: this.value === 'full',
-    } as GenerateDescription
-
-    this.youtubeTranscript$
-      .pipe(
-        take(1),
-        filter(ytInfo => !!ytInfo.length)
-      )
-      .subscribe(ytInfo => {
-        this.currentView = 'viewDesc'
-        this.store.dispatch(
-          getAIYoutubeDescription({
-            transcript: ytInfo.map((a: any) => a.text),
-            generateDescription: description,
-          })
-        )
+        },
+        complete: () => {
+          console.log('finished')
+        },
+        error: error => {
+          if (error.eventPhase === EventSource.CLOSED) {
+            this.store.dispatch(
+              addAIYoutubeDescription({ description: this.fullResponse })
+            )
+            this.fullResponse = ''
+            this.currentlyGenerating = false
+            console.warn('Connection closed by the server')
+          } else {
+            console.error('Error receiving updates:', error)
+          }
+        },
       })
   }
 
