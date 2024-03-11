@@ -19,7 +19,7 @@ export const youtubeFeatureKey = 'youtube-info'
 
 export interface YoutubeState {
   youtubeInfo: YoutubeInfo
-  timestamps: YoutubeTimestamps[]
+  timestamps: YoutubeTimestamps
   activeTabs: any
   hasUploadedKey: boolean
   generatedDescriptions: string[]
@@ -38,7 +38,9 @@ const initialState: YoutubeState = {
     viewCount: 0,
     author: '',
   },
-  timestamps: [],
+  timestamps: {
+    transcript: ''
+  },
   activeTabs: [
     {
       left: [
@@ -95,7 +97,9 @@ export const YoutubeReducer = createReducer(
   on(getYoutubeTimestampsSuccess, (state: YoutubeState, { timestamps }) => {
     return {
       ...state,
-      timestamps,
+      timestamps: {
+        transcript: timestamps.map((a) => a.transcript).join('')
+      },
     }
   }),
   on(uploadedKey, (state: YoutubeState, { key }) => {

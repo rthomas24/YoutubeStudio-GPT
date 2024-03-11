@@ -379,7 +379,7 @@ app.get('/getCustomDescription', async (req, res) => {
       This is the custom instructions on what to add to the description: ${
         parameters.instructions
       }. And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill out the description: ${
-        parameters.fullTranscript ? transcript.join('') : transcriptSummary.text
+        parameters.fullTranscript ? parameters.transcript : transcriptSummary.text
       }`
 
     const prompt = ChatPromptTemplate.fromMessages([
@@ -422,7 +422,7 @@ async function summarizeTranscript(transcript) {
   const langChainModel = new ChatOpenAI({
     openAIApiKey,
     modelName,
-    temperature: 0,
+    temperature: 1.0,
   })
 
   const textSplitter = new RecursiveCharacterTextSplitter({

@@ -2,7 +2,7 @@
   *ngIf="youtubeTranscript$ | async as youtubeInfo"
   class="transcriptContainer"
 >
-  <p-header class="header" *ngIf="!youtubeInfo.length">
+  <p-header class="header" *ngIf="!youtubeInfo.transcript">
     <h2 class="p-text-center">
       Please enter a Youtube URL to get a Transcript
     </h2>
@@ -13,7 +13,7 @@
   </p-header> -->
 
   <div class="transcript">
-    <p *ngFor="let transcript of youtubeInfo">{{ transcript.text }}</p>
+    <p>{{ youtubeInfo.transcript }}</p>
     <!-- <p>{{ fullResponse }}</p> -->
   </div>
 </div>

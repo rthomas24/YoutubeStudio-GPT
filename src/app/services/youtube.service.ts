@@ -47,7 +47,7 @@ export class YoutubeService {
           const parsedData = JSON.parse(data)
           return parsedData.result.map((a: any) => {
             return {
-              text: a.text,
+              transcript: a.text,
               start: a.offset / 1000,
               duration: a.duration / 1000,
             } as YoutubeTimestamps
@@ -164,9 +164,9 @@ export interface YoutubeInfo {
 }
 
 export interface YoutubeTimestamps {
-  text: string
-  start: number
-  duration: number
+  transcript: string
+  start?: number
+  duration?: number
 }
 
 export interface ChatCompletionResponse {

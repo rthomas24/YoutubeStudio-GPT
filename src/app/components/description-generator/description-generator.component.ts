@@ -16,6 +16,7 @@ import {
 import {
   YoutubeInfo,
   YoutubeService,
+  YoutubeTimestamps,
 } from 'src/app/services/youtube.service'
 import { ConfirmationService } from 'primeng/api'
 
@@ -38,7 +39,7 @@ export class DescriptionGeneratorComponent implements OnInit {
   public keywords: string[] = []
   public instructions: string = ''
   public aiGenereatedDescriptions$: Observable<string[]>
-  public youtubeTranscript$: Observable<any>
+  public youtubeTranscript$: Observable<YoutubeTimestamps>
   public youtubeInfo$: Observable<YoutubeInfo>
   public generateKeyWords$: Observable<string[]>
   public generateInstructions$: Observable<string>
@@ -133,14 +134,14 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.youtubeTranscript$
       .pipe(
         take(1),
-        filter(ytInfo => !!ytInfo.length)
+        filter(ytInfo => !!ytInfo.transcript)
       )
       .subscribe(ytInfo => {
         this.currentView = 'viewDesc'
         this.youtube
           .getYTDescription(
             descriptionOptions,
-            ytInfo.map((a: any) => a.text)
+            ytInfo.transcript
           )
           .subscribe({
             next: (response: any) => {
@@ -182,11 +183,11 @@ export class DescriptionGeneratorComponent implements OnInit {
     this.youtubeTranscript$
       .pipe(
         take(1),
-        filter(ytInfo => !!ytInfo.length)
+        filter(ytInfo => !!ytInfo.transcript)
       )
       .subscribe(ytInfo => {
         this.store.dispatch(
-          getAIKeyTerms({ transcript: ytInfo.map((a: any) => a.text) })
+          getAIKeyTerms({ transcript: ytInfo.transcript })
         )
       })
   }
