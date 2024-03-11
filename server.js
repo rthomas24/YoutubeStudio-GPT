@@ -340,7 +340,7 @@ app.get('/getTranscriptSummary', async (req, res) => {
 
 const parametersStore = {}
 
-app.post('/api/initiateChat', (req, res) => {
+app.post('/api/getYTDescription', (req, res) => {
   const parameters = req.body
   const token = crypto.randomBytes(20).toString('hex')
   parametersStore[token] = parameters
@@ -350,13 +350,10 @@ app.post('/api/initiateChat', (req, res) => {
 app.get('/getCustomDescription', async (req, res) => {
   const token = req.query.token
   const parameters = parametersStore[token]
-  // console.log(JSON.stringify(parameters))
   if (!parameters) {
     res.status(404).send('Session not found')
     return
   }
-
-  const openaiModel = new OpenAI({ apiKey: openAIApiKey })
   let result
 
   res.setHeader('Content-Type', 'text/event-stream')
@@ -364,55 +361,47 @@ app.get('/getCustomDescription', async (req, res) => {
   res.setHeader('Connection', 'keep-alive')
 
   try {
-    console.log('transcript ' + JSON.stringify(parameters.transcript.join('')))
-
     let transcriptSummary
     if (!parameters.fullTranscript) {
       transcriptSummary = await summarizeTranscript(parameters.transcript)
     }
 
-    console.log('transcriptSummary ' + JSON.stringify(transcriptSummary))
+    const SYSTEM_TEMPLATE = `You are specialized in crafting YouTube video descriptions. Your task is to create a compelling and informative description for a YouTube video, guided by the details the user specifies. Ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count. This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.`
+    const HUMAN_TEMPLATE = `Create a YouTube video description, 
+      the category of the video is ${parameters.category}. 
+      You should use the following keywords in the generated description naturally: ${parameters.keyWords.join(
+        ', and '
+      )}. 
+      The desired Word Count is approximately ${parameters.wordCount} words. 
+      Your tone of voice for the description should be ${parameters.tones.join(
+        ', and '
+      )}. 
+      This is the custom instructions on what to add to the description: ${
+        parameters.instructions
+      }. And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill out the description: ${
+        parameters.fullTranscript ? transcript.join('') : transcriptSummary.text
+      }`
 
-    result = await openaiModel.chat.completions.create({
-      model: 'gpt-3.5-turbo-0125',
-      messages: [
-        {
-          role: 'system',
-          content: `You are specialized in crafting YouTube video descriptions. Your task is to create a compelling and informative description for a YouTube video, guided by the details the user specifies. Ensure that the description reflects the video's content accurately, incorporates the specified keywords naturally, adheres to the user's custom instructions, and matches the desired tone and word count. This tailored approach aims to meet the specific needs and preferences of the user for their YouTube video description.`,
-        },
-        {
-          role: 'user',
-          content: `Create a YouTube video description, 
-            the category of the video is ${parameters.category}. 
-            You should use the following keywords in the generated description naturally: ${parameters.keyWords.join(
-              ', and '
-            )}. 
-            The desired Word Count is approximately ${
-              parameters.wordCount
-            } words. 
-            Your tone of voice for the description should be ${parameters.tones.join(
-              ', and '
-            )}. 
-            This is the custom instructions on what to add to the description: ${
-              parameters.instructions
-            }. And the following is a summary description of the video that you are to make the description for, use this summary of the transcript for your knowledge to fill out the description: ${
-              parameters.fullTranscript
-                ? transcript.join('')
-                : transcriptSummary.text
-            }`,
-        },
-      ],
-      stream: true,
+    const prompt = ChatPromptTemplate.fromMessages([
+      ['system', SYSTEM_TEMPLATE],
+      ['human', HUMAN_TEMPLATE],
+    ])
+
+    const model = new ChatOpenAI({
+      openAIApiKey,
+      modelName: 'gpt-3.5-turbo-0125',
       temperature: 0.7,
+      streaming: true,
     })
 
+    const chain = prompt.pipe(model)
+    result = await chain.stream()
+
     for await (const chunk of result) {
-      res.write(`data: ${JSON.stringify(chunk.choices[0].delta.content)}\n\n`)
-      if (chunk.data && chunk.data.startsWith('[DONE]')) {
-        res.end()
-        break
-      }
+      res.write(`data: ${JSON.stringify(chunk.content)}\n\n`)
     }
+
+    res.end()
   } catch (err) {
     console.error(err)
     res.end()
